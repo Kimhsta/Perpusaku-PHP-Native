@@ -1,0 +1,156 @@
+create database pusaku;
+use pusaku;
+
+create table owner (
+    id_owner int auto_increment primary key,
+    username varchar(60) not null,
+    password varchar(60) not null
+);
+
+create table petugas (
+    id_petugas int auto_increment primary key,
+    nama_petugas varchar(100) not null,
+    username varchar(60) not null,
+    password varchar(60) not null,
+    jenis_kelamin enum('Laki-Laki', 'Perempuan') not null,
+    no_telp char(15) not null
+);
+
+create table anggota (
+    nim int auto_increment primary key,
+    nama varchar(100) not null,
+    jenis_kelamin enum('Laki-Laki', 'Perempuan') not null,
+    jurusan varchar(40) not null,
+    kelas varchar(10) not null,
+    tgl_lahir date not null,
+    password varchar(60) not null,
+    status_mhs enum('Aktif','Tidak Aktif')not null
+);
+
+create table buku (
+    cover varchar(255) not null,
+    kode_buku varchar(10) primary key,
+    kategori varchar(50) not null,
+    judul_buku varchar(100) not null,
+    pengarang varchar(100) not null,
+    penerbit varchar(100) not null,
+    tanggal_terbit date not null,
+    jumlah_halaman int not null,
+    bahasa varchar(20) not null,
+    deskripsi_buku text not null,
+    stok int,
+    status ENUM('Tersedia', 'Dipinjam') NOT NULL DEFAULT 'Tersedia'
+);
+
+
+create table peminjaman (
+    kode_pinjam int auto_increment primary key,
+    nim int,
+    id_petugas int,
+    kode_buku varchar(10),
+    tgl_pinjam DATETIME DEFAULT CURRENT_TIMESTAMP,
+    estimasi_pinjam DATETIME,
+    kondisi_buku_pinjam ENUM('bagus', 'rusak') NOT NULL DEFAULT 'bagus'
+    foreign key (nim) references anggota(nim) ON DELETE CASCADE ,
+    foreign key (id_petugas) references petugas(id_petugas) ON DELETE CASCADE,
+    foreign key (kode_buku) references buku(kode_buku) ON DELETE CASCADE
+);
+
+create table pengembalian (
+    kode_kembali int auto_increment primary key,
+    kode_pinjam int,
+    nim int,
+    kode_buku varchar(10),
+    id_petugas int,
+    tgl_kembali date not null,
+    kondisi_buku ENUM('bagus', 'rusak', 'hilang') NOT NULL DEFAULT 'bagus',
+    denda decimal(10,2) not null,
+    foreign key (kode_pinjam) references peminjaman(kode_pinjam) ON DELETE CASCADE,
+);
+
+-- Tabel Detail Peminjaman
+CREATE TABLE DETAIL_PEMINJAMAN (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    kode_pinjam VARCHAR(6),
+    kode_buku VARCHAR(6),
+    kondisi_buku_pinjam ENUM('bagus', 'rusak') NOT NULL DEFAULT 'bagus',
+    FOREIGN KEY (kode_pinjam) REFERENCES PEMINJAMAN(kode_pinjam) ON DELETE CASCADE,
+    FOREIGN KEY (kode_buku) REFERENCES BUKU(kode_buku) ON DELETE CASCADE
+);
+
+DELIMITER //
+CREATE TRIGGER update_buku_status
+BEFORE UPDATE ON buku
+FOR EACH ROW
+BEGIN
+    IF NEW.stok <= 0 THEN
+        SET NEW.status = 'Dipinjam';
+    ELSE
+        SET NEW.status = 'Tersedia';
+    END IF;
+END;
+//
+DELIMITER ;
+
+
+
+-- Data untuk tabel anggota
+insert into anggota (nim, nama, jenis_kelamin, jurusan, kelas, tgl_lahir, password, status_mhs ) 
+values 
+('230103151', 'Nadira Rima Putri', 'Perempuan','S1-Sistem Informasi', 'SI-23A1', '2000-05-02', 'mhsduba123', 'Aktif'),
+('230103161', 'Kiki Mahesta', 'Laki-Laki','S1-Teknik Informatika', 'TI-23A1', '2004-01-11', 'mhsduba123', 'Aktif');
+
+-- Data untuk tabel petugas
+insert into petugas (nama_petugas, username, password, jenis_kelamin, no_telp)
+values
+('Rahmat Hidayat', 'rahmat', 'pass123', 'Laki-Laki', '081234567890'),
+('Aisyah Nur', 'aisyah', 'pass456', 'Perempuan', '082345678901');
+
+-- Data untuk tabel owner
+insert into owner (username, password)
+values
+('admin', 'admin123'),
+('owner', 'owner123');
+
+INSERT INTO buku 
+(cover, kode_buku, kategori, judul_buku, pengarang, penerbit, tanggal_terbit, jumlah_halaman, bahasa, deskripsi_buku) 
+VALUES 
+('coverBK101.jpg', 'BK101', 'Pemrograman', 'Clean Code: A Handbook of Agile Software Craftsmanship', 'Robert C. Martin', 'Prentice Hall', '2008-08-01', '464', 'Inggris', 'Panduan menulis kode bersih dan dapat dipelihara. Sangat relevan untuk programmer modern.'),
+('coverBK102.jpg', 'BK102', 'Pemrograman', '7 in 1 Pemrograman Web untuk Pemula (Update Version)', 'Rohi Abdulloh', 'Elex Media Komputindo', '2023-05-23', '448', 'Indonesia', 'Panduan lengkap mempelajari 7 teknologi pemrograman web, dari dasar hingga pembuatan aplikasi.'),
+('coverBK103.jpg', 'BK103', 'Pemrograman', 'Membangun Aplikasi Berbasis Data dengan Python', 'Jubilee Enterprise', 'Elex Media Komputindo', '2022-09-30', '232', 'Indonesia', 'Membahas pembuatan aplikasi database dengan Python menggunakan MySQL dan Firebase.'),
+('coverBK104.jpg', 'BK104', 'Pemrograman', 'Langsung Bisa HTML, JavaScript, PHP, dan MySQL', 'Arista Prasetyo Adi', 'Elex Media Komputindo', '2023-08-21', '288', 'Indonesia', 'Panduan cepat belajar teknologi web inti: HTML, JavaScript, PHP, dan MySQL dengan latihan praktis.'),
+('coverBK105.jpg', 'BK105', 'Pemrograman', 'Logika Pemrograman Java (Update Version)', 'Abdul Kadir', 'Elex Media Komputindo', '2023-04-18', '568', 'Indonesia', 'Buku dasar pemrograman Java dengan pendekatan OOP, cocok untuk pemula hingga mahir.'),
+('coverBK201.jpg', 'BK201', 'Jaringan & Keamanan', 'Ilmu Hacking', 'Dedik Kurniawan', 'Elex Media Komputindo', '2023-03-01', '416', 'Indonesia', 'Mempelajari teknik hacking untuk melindungi sistem dari serangan hacker.'),
+('coverBK202.jpg', 'BK202', 'Jaringan & Keamanan', 'Firewall Melindungi Jaringan dari DDoS menggunakan Linux + Mikrotik', 'Harijanto Pribadi', 'Andi Publisher', '2008-08-08', '80', 'Indonesia', 'Panduan konfigurasi Linux dan Mikrotik untuk menangkal serangan DDoS.'),
+('coverBK203.jpg', 'BK203', 'Jaringan & Keamanan', 'Kriptografi untuk Keamanan Jaringan', 'Rifki Sadikin', 'Andi Publisher', '2012-06-09', '392', 'Indonesia', 'Membahas kriptografi untuk keamanan jaringan, termasuk teknik enkripsi dan steganografi.'),
+('coverBK204.jpg', 'BK204', 'Jaringan & Keamanan', 'Bikin PC Aman dari Serangan Virus, Spam, dan Spyware', 'Wahana Komputer', 'Andi Publisher', '2009-12-12', '196', 'Indonesia', 'Teknik mencegah dan menangani malware, spam, serta spyware untuk keamanan PC.'),
+('coverBK205.jpg', 'BK205', 'Jaringan & Keamanan', 'Teknologi Komunikasi Data Modern', 'Jusak', 'Andi Publisher', '2013-01-23', '370', 'Indonesia', 'Membahas teknologi komunikasi modern seperti WiMAX, Bluetooth, dan lainnya.'),
+('coverBK301.jpg', 'BK301', 'Algoritma dan Struktur Data', 'Pengantar Logika dan Algoritma', 'Yulikus Partono', 'Andi Publisher', '2004-09-11', '105', 'Indonesia', 'Memperkenalkan dasar logika dan algoritma, termasuk tipe data dan diagram alur.'),
+('coverBK302.jpg', 'BK302', 'Algoritma dan Struktur Data', 'Data Mining, Algoritma dan Implementasi', 'Muhammad Arhami, Muhammad Nasir', 'Andi Publisher', '2020-02-24', '212', 'Indonesia', 'Konsep data mining dan algoritma-algoritma yang diterapkan dengan contoh praktis.'),
+('coverBK303.jpg', 'BK303', 'Algoritma dan Struktur Data', 'Logika & Algoritma Pemrograman', 'Siti Nur Aisyah', 'Anak Hebat Indonesia', '2023-11-18', '256', 'Indonesia', 'Dasar logika dan algoritma pemrograman untuk pemula hingga lanjutan.'),
+('coverBK304.jpg', 'BK304', 'Algoritma dan Struktur Data', 'Struktur Data Terapan dalam Berbagai Bahasa Pemrograman', 'Rosa A.S', 'Modula', '2021-11-02', '542', 'Indonesia', 'Pembahasan tentang struktur data di berbagai bahasa pemrograman.'),
+('coverBK305.jpg', 'BK305', 'Algoritma dan Struktur Data', 'Algoritma Pemrograman dan Struktur Data Menggunakan C++', 'Cipta Ramadhani', 'Andi Offset', '2020-01-29', '396', 'Indonesia', 'Membahas algoritma dasar dan struktur data dengan pendekatan berbasis C++.'),
+('coverBK401.jpg', 'BK401', 'Basis Data', 'Belajar Cepat Database NoSQL', 'Agit Amrullah, Kusnawi', 'Andi Publisher', '2023-07-18', '120', 'Indonesia', 'Panduan praktis membangun database NoSQL menggunakan MongoDB untuk big data.'),
+('coverBK402.jpg', 'BK402', 'Basis Data', 'Database Design All in One: Theory, Practice, and Case Study', 'Indrajani', 'Elex Media Komputindo', '2018-08-13', '328', 'Indonesia', 'Panduan desain database dengan teori, praktik, dan studi kasus.'),
+('coverBK403.jpg', 'BK403', 'Basis Data', 'Pemrograman Database dengan Python dan MySQL', 'Jubilee Enterprise', 'Elex Media Komputindo', '2018-03-12', '176', 'Indonesia', 'Belajar mengelola database dengan Python dan MySQL secara efisien.')
+;
+
+ALTER TABLE petugas 
+ADD COLUMN profil_gambar VARCHAR(255) NOT NULL;
+
+alter table pengembalian
+add column kondisi_buku ENUM('bagus', 'rusak', 'hilang') NOT NULL DEFAULT 'bagus';
+
+ALTER TABLE peminjaman
+add column tgl_pinjam DATETIME DEFAULT CURRENT_TIMESTAMP,
+add column estimasi_pinjam DATETIME;
+
+
+
+
+insert into petugas (nama_petugas, username, password, jenis_kelamin, no_telp, profil_gambar)
+values
+('Kaisar Hirohito', 'hirohito', 'admin123', 'Laki-Laki', '081234567890', 'profil1.jpg'),
+('Ryo Yamada', 'yamada', 'admin456', 'Perempuan', '082345678901', 'profil2.jpg');
+
+describe pengembalian;
