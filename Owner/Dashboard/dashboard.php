@@ -72,7 +72,7 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                     <img src="../../Assets/uploads/<?= htmlspecialchars($profil_gambar); ?>" alt="Profile Image" class="profile-img me-3" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                     <div>
                         <h6 class="fw-bold mb-0"><?= $nama_pemilik; ?></h6>
-                        <p class="mb-0 text-muted">Owner</p>
+                        <p class="mb-0 text-muted">Pemilik</p>
                     </div>
                 </div>
             </div>
