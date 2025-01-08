@@ -15,7 +15,7 @@ $totalPages = ceil($totalRows / $limit);
 
 // Ambil data sesuai halaman
 $result = $conn->prepare("
-    SELECT peminjaman.kode_pinjam, anggota.nama AS nama_anggota, buku.judul_buku, 
+    SELECT peminjaman.kode_pinjam, anggota.nama AS nama_anggota, anggota.no_telp, buku.judul_buku, 
     petugas.nama_petugas, peminjaman.tgl_pinjam, peminjaman.estimasi_pinjam, 
     peminjaman.kondisi_buku_pinjam, 
     IF(EXISTS (SELECT 1 FROM pengembalian WHERE pengembalian.kode_pinjam = peminjaman.kode_pinjam), 'Dikembalikan', 'Dipinjam') AS status
@@ -25,6 +25,7 @@ $result = $conn->prepare("
     INNER JOIN petugas ON peminjaman.id_petugas = petugas.id_petugas
     LIMIT :limit OFFSET :offset
 ");
+
 
 $result->bindValue(':limit', $limit, PDO::PARAM_INT);
 $result->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -95,9 +96,11 @@ $result->execute();
               <button class="btn btn-info btn-sm rounded-2 text-white" onclick="printData('<?= $row['kode_pinjam']; ?>')">
                 <i class="fas fa-print"></i> Print
               </button>
-              <button class="btn btn-success btn-sm rounded-2 text-white">
-                <i class="fab fa-whatsapp"></i> Chat
-              </button>
+              <button class="btn btn-success btn-sm rounded-2 text-white"
+        onclick="window.open('https://wa.me/<?= $row['no_telp']; ?>?text=Halo%20<?= urlencode($row['nama_anggota']); ?>,%20buku%20yang%20Anda%20pinjam%20sudah%20melewati%20estimasi%20pengembalian.%20Mohon%20dikembalikan%20segera.', '_blank')">
+  <i class="fab fa-whatsapp"></i> Chat
+</button>
+
             </td>
           </tr>
           <?php endwhile; ?>
