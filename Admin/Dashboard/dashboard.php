@@ -66,12 +66,12 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
 
             <!-- Bagian Profil -->
             <div class="d-flex align-items-center gap-4">
-                                <!-- Ikon Pesan -->
-                                <button class="btn btn-light border rounded-4 message-icon">
+                <!-- Ikon Pesan -->
+                <button class="btn btn-light border rounded-4 message-icon">
                     <i class="fas fa-sign-out-alt rotated-icon" id="log_out" onclick="confirmLogout()"></i>
                 </button>
                 <div class="d-flex align-items-center">
-                <img src="../../Assets/uploads/<?= htmlspecialchars($profil_gambar); ?>" alt="Profile Image" class="profile-img me-3" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+                    <img src="../../Assets/uploads/<?= htmlspecialchars($profil_gambar); ?>" alt="Profile Image" class="profile-img me-3" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
                     <div>
                         <h6 class="fw-bold mb-0"><?= $nama_petugas; ?></h6>
                         <p class="mb-0 text-muted">Admin</p>
@@ -90,8 +90,8 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                                 <i class="bx bx-user fs-2"></i>
                             </div>
                             <div class="ms-4 text-start">
-                                <h3 class="fw-bold mb-1"><?= $anggotaResult->rowCount(); ?></h3>   
-                                <p>Anggota</p>                            
+                                <h3 class="fw-bold mb-1"><?= $anggotaResult->rowCount(); ?></h3>
+                                <p>Anggota</p>
                             </div>
                         </div>
                         <a href="../Anggota/anggota.php" class="btn btn-light btn-sm rounded-3">Lihat Semua</a>
@@ -150,72 +150,74 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                 </div>
             </div>
         </div>
+
+
         <!-- Flex Container for Calendar and Lists -->
         <div class="d-flex justify-content-between">
-        <div class="calendar border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
-    <!-- Calendar Section -->
-    <div class="calendar-content flex-grow-1">
-        <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
-            <button id="prev" class="btn btn-primary">❮</button>
-            <h2 id="month-year" class="mb-0">January 2025</h2>
-            <button id="next" class="btn btn-primary">❯</button>
-        </div>
-        <div class="calendar-grid" id="calendar-grid" class="d-grid grid-template-columns-7 gap-2 text-center">
-            <!-- Grid of days will go here -->
-        </div>
-    </div>
-    <div class="anime-image ms-3" style="width: 50%; padding: 0px;">
-    <img id="random-image" src="" alt="" class="img-fluid rounded-3 shadow-sm" />
-</div>
+            <div class="calendar border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
+                <!-- Calendar Section -->
+                <div class="calendar-content flex-grow-1">
+                    <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+                        <button id="prev" class="btn btn-primary">❮</button>
+                        <h2 id="month-year" class="mb-0">January 2025</h2>
+                        <button id="next" class="btn btn-primary">❯</button>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid" class="d-grid grid-template-columns-7 gap-2 text-center">
+                        <!-- Grid of days will go here -->
+                    </div>
+                </div>
+                <div class="anime-image ms-3" style="width: 50%; padding: 0px;">
+                    <img id="random-image" src="" alt="" class="img-fluid rounded-3 shadow-sm" />
+                </div>
 
-</div>
+            </div>
 
             <!-- Lists Section Side by Side -->
             <div class="d-flex flex-row gap-4 w-50 col-md-3">
                 <!-- Lists Section Side by Side -->
-<div class="d-flex flex-row gap-4 w-100 col-md-12 justify-content-between ">
-    <!-- Daftar Peminjaman yang Perlu Dikembalikan -->
-    <div class="card w-50 border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
-        <div class="card-body">
-            <h5 class="card-title text-primary mb-3">Pengembalian yang Perlu Dikembalikan</h5>
-            <div class="list-group">
-                <?php if ($stmtPinjamKembali->rowCount() > 0): ?>
-                    <?php while ($row = $stmtPinjamKembali->fetch(PDO::FETCH_ASSOC)): ?>
-                        <div class="list-group-item border-0">
-                            <h6 class="fw-bold mb-1 text-dark">Kode Pinjam: <?= htmlspecialchars($row['kode_pinjam']); ?></h6>
-                            <p class="mb-0 text-muted">Nama: <?= htmlspecialchars($row['nama']); ?></p>
-                            <p class="mb-0 text-muted">Kode Buku: <?= htmlspecialchars($row['kode_buku']); ?></p>
-                            <p class="text-danger mb-0">Estimasi Kembali: <?= htmlspecialchars($row['estimasi_pinjam']); ?></p>
+                <div class="d-flex flex-row gap-4 w-100 col-md-12 justify-content-between ">
+                    <!-- Daftar Peminjaman yang Perlu Dikembalikan -->
+                    <div class="card w-50 border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-3">Pengembalian yang Perlu Dikembalikan</h5>
+                            <div class="list-group">
+                                <?php if ($stmtPinjamKembali->rowCount() > 0): ?>
+                                    <?php while ($row = $stmtPinjamKembali->fetch(PDO::FETCH_ASSOC)): ?>
+                                        <div class="list-group-item border-0">
+                                            <h6 class="fw-bold mb-1 text-dark">Kode Pinjam: <?= htmlspecialchars($row['kode_pinjam']); ?></h6>
+                                            <p class="mb-0 text-muted">Nama: <?= htmlspecialchars($row['nama']); ?></p>
+                                            <p class="mb-0 text-muted">Kode Buku: <?= htmlspecialchars($row['kode_buku']); ?></p>
+                                            <p class="text-danger mb-0">Estimasi Kembali: <?= htmlspecialchars($row['estimasi_pinjam']); ?></p>
+                                        </div>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <p class="text-muted">Tidak ada peminjaman yang perlu dikembalikan.</p>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p class="text-muted">Tidak ada peminjaman yang perlu dikembalikan.</p>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
+                    </div>
 
-    <!-- Daftar Pengembalian Belum Lunas -->
-    <div class="card w-50 border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
-        <div class="card-body">
-            <h5 class="card-title text-warning mb-3">Pengembalian Belum Lunas</h5>
-            <div class="list-group">
-                <?php if ($stmtBelumLunas->rowCount() > 0): ?>
-                    <?php while ($row = $stmtBelumLunas->fetch(PDO::FETCH_ASSOC)): ?>
-                        <div class="list-group-item border-0">
-                            <h6 class="fw-bold mb-1 text-dark">Kode Kembali: <?= htmlspecialchars($row['kode_kembali']); ?></h6>
-                            <p class="mb-0 text-muted">Nama: <?= htmlspecialchars($row['nama']); ?></p>
-                            <p class="mb-0 text-muted">Denda: Rp<?= number_format($row['denda'], 2, ',', '.'); ?></p>
-                            <p class="text-warning mb-0">Pembayaran: <?= htmlspecialchars($row['pembayaran']); ?></p>
+                    <!-- Daftar Pengembalian Belum Lunas -->
+                    <div class="card w-50 border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
+                        <div class="card-body">
+                            <h5 class="card-title text-warning mb-3">Pengembalian Belum Lunas</h5>
+                            <div class="list-group">
+                                <?php if ($stmtBelumLunas->rowCount() > 0): ?>
+                                    <?php while ($row = $stmtBelumLunas->fetch(PDO::FETCH_ASSOC)): ?>
+                                        <div class="list-group-item border-0">
+                                            <h6 class="fw-bold mb-1 text-dark">Kode Kembali: <?= htmlspecialchars($row['kode_kembali']); ?></h6>
+                                            <p class="mb-0 text-muted">Nama: <?= htmlspecialchars($row['nama']); ?></p>
+                                            <p class="mb-0 text-muted">Denda: Rp<?= number_format($row['denda'], 2, ',', '.'); ?></p>
+                                            <p class="text-warning mb-0">Pembayaran: <?= htmlspecialchars($row['pembayaran']); ?></p>
+                                        </div>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <p class="text-muted">Tidak ada pengembalian yang belum lunas.</p>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p class="text-muted">Tidak ada pengembalian yang belum lunas.</p>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -241,9 +243,8 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
     </div>
 </div>
 <script>
-
-      // Fungsi untuk menampilkan gambar secara acak
-      function displayRandomImage() {
+    // Fungsi untuk menampilkan gambar secara acak
+    function displayRandomImage() {
         // Daftar nama file gambar di folder ../../Assets/Anime Date
         const images = ["anime1.jpg", "anime2.jpg", "anime3.jpg"];
 
@@ -254,22 +255,23 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
         // Update atribut src pada elemen img
         const imageElement = document.getElementById("random-image");
         imageElement.src = `../../Assets/Anime Date/${selectedImage}`;
-      }
+    }
 
     // Jalankan fungsi saat halaman dimuat
     window.onload = displayRandomImage;
-function confirmLogout() {
-    var myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-    myModal.show();
-}
 
-function logout() {
-    window.location.href = "logout.php"; // Redirect ke logout.php
-}
+    function confirmLogout() {
+        var myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
+        myModal.show();
+    }
 
-const monthNames = [
-      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    function logout() {
+        window.location.href = "logout.php"; // Redirect ke logout.php
+    }
+
+    const monthNames = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
     ];
     const dayNames = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
 
@@ -281,60 +283,60 @@ const monthNames = [
     let currentDate = new Date();
 
     function renderCalendar() {
-      calendarGrid.innerHTML = "";
+        calendarGrid.innerHTML = "";
 
-      // Set month and year
-      const month = currentDate.getMonth();
-      const year = currentDate.getFullYear();
-      monthYearLabel.textContent = `${monthNames[month]} ${year}`;
+        // Set month and year
+        const month = currentDate.getMonth();
+        const year = currentDate.getFullYear();
+        monthYearLabel.textContent = `${monthNames[month]} ${year}`;
 
-      // Create day headers
-      dayNames.forEach(day => {
-        const dayHeader = document.createElement("div");
-        dayHeader.textContent = day;
-        dayHeader.classList.add("day-header");
-        calendarGrid.appendChild(dayHeader);
-      });
+        // Create day headers
+        dayNames.forEach(day => {
+            const dayHeader = document.createElement("div");
+            dayHeader.textContent = day;
+            dayHeader.classList.add("day-header");
+            calendarGrid.appendChild(dayHeader);
+        });
 
-      // First day of the month
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
+        // First day of the month
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-      // Create blank days
-      for (let i = 0; i < firstDay; i++) {
-        const blankDay = document.createElement("div");
-        blankDay.classList.add("day");
-        calendarGrid.appendChild(blankDay);
-      }
-
-      // Create actual days
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dayElement = document.createElement("div");
-        dayElement.textContent = day;
-        dayElement.classList.add("day");
-
-        // Highlight current day
-        if (
-          day === currentDate.getDate() &&
-          month === new Date().getMonth() &&
-          year === new Date().getFullYear()
-        ) {
-          dayElement.classList.add("current-day");
+        // Create blank days
+        for (let i = 0; i < firstDay; i++) {
+            const blankDay = document.createElement("div");
+            blankDay.classList.add("day");
+            calendarGrid.appendChild(blankDay);
         }
 
-        calendarGrid.appendChild(dayElement);
-      }
+        // Create actual days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayElement = document.createElement("div");
+            dayElement.textContent = day;
+            dayElement.classList.add("day");
+
+            // Highlight current day
+            if (
+                day === currentDate.getDate() &&
+                month === new Date().getMonth() &&
+                year === new Date().getFullYear()
+            ) {
+                dayElement.classList.add("current-day");
+            }
+
+            calendarGrid.appendChild(dayElement);
+        }
     }
 
     // Navigate months
     prevButton.addEventListener("click", () => {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      renderCalendar();
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
     });
 
     nextButton.addEventListener("click", () => {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-      renderCalendar();
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
     });
 
     // Initial render
