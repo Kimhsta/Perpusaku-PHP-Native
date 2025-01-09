@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `buku` (
   `bahasa` varchar(20) NOT NULL,
   `deskripsi_buku` text NOT NULL,
   `stok` int DEFAULT NULL,
-  `status` enum('Tersedia','Dipinjam') NOT NULL DEFAULT 'Tersedia',
+  `status` enum('Tersedia','Dipinjam', 'Kosong') NOT NULL DEFAULT 'Tersedia',
   PRIMARY KEY (`kode_buku`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -126,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `petugas` (
   `password` varchar(60) NOT NULL,
   `jenis_kelamin` enum('Laki-Laki','Perempuan') NOT NULL,
   `no_telp` char(15) NOT NULL,
+  `status` enum('Aktif','Tidak Aktif') NOT NULL DEFAULT 'Aktif',
   `profil_gambar` varchar(255) NOT NULL,
   PRIMARY KEY (`id_petugas`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
