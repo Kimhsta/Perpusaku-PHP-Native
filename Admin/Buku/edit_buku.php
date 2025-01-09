@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal_terbit = $_POST['tanggal_terbit'];
     $bahasa = $_POST['bahasa'];
     $kategori = $_POST['kategori'];
+    $stok = $_POST['stok'];
     $jumlah_halaman = $_POST['jumlah_halaman'];
     $deskripsi_buku = $_POST['deskripsi_buku'];
 
@@ -53,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Update data buku
-        $stmt = $conn->prepare("UPDATE buku SET judul_buku = ?, pengarang = ?, penerbit = ?, tanggal_terbit = ?, bahasa = ?, kategori = ?, jumlah_halaman = ?, deskripsi_buku = ?, cover = ? WHERE kode_buku = ?");
-        $stmt->execute([$judul_buku, $pengarang, $penerbit, $tanggal_terbit, $bahasa, $kategori, $jumlah_halaman, $deskripsi_buku, $cover_name, $kode_buku]);
+        $stmt = $conn->prepare("UPDATE buku SET judul_buku = ?, pengarang = ?, penerbit = ?, tanggal_terbit = ?, bahasa = ?, kategori = ?, jumlah_halaman = ?, stok = ?, deskripsi_buku = ?, cover = ? WHERE kode_buku = ?");
+        $stmt->execute([$judul_buku, $pengarang, $penerbit, $tanggal_terbit, $bahasa, $kategori, $stok, $jumlah_halaman, $deskripsi_buku, $cover_name, $kode_buku]);
 
         if ($stmt->rowCount() > 0) {
             echo "<script>
@@ -78,10 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- Form Edit Buku -->
 <form method="POST" action="update_buku.php" enctype="multipart/form-data">
     <div class="row g-3">
-        <!-- <div class="col-md-6">
+        <div class="col-md-6">
             <label for="kode_buku" class="form-label">Kode Buku</label>
             <input type="text" class="form-control" id="kode_buku" name="kode_buku" value="<?= $buku['kode_buku'] ?>" readonly>
-        </div> -->
+        </div>
         <div class="col-md-6">
             <label for="judul_buku" class="form-label">Judul Buku</label>
             <input type="text" class="form-control" id="judul_buku" name="judul_buku" value="<?= $buku['judul_buku'] ?>" required>
@@ -121,6 +122,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="col-md-6">
             <label for="jumlah_halaman" class="form-label">Jumlah Halaman</label>
             <input type="number" class="form-control" id="jumlah_halaman" name="jumlah_halaman" value="<?= $buku['jumlah_halaman'] ?>" required>
+        </div>
+        <div class="col-md-6">
+            <label for="stok" class="form-label">Stok</label>
+            <input type="number" class="form-control" id="stok" name="stok" value="<?= $buku['stok'] ?>" required>
         </div>
         <div class="col-md-6">
             <label for="cover" class="form-label">Cover Buku</label>

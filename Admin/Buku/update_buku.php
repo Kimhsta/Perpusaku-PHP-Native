@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal_terbit = $_POST['tanggal_terbit'];
     $bahasa = $_POST['bahasa'];
     $kategori = $_POST['kategori'];
+    $stok = $_POST['stok'];
     $jumlah_halaman = $_POST['jumlah_halaman'];
     $deskripsi_buku = $_POST['deskripsi_buku'];
 
@@ -35,10 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Update data buku
         $stmt = $conn->prepare("
             UPDATE buku 
-            SET judul_buku = ?, pengarang = ?, penerbit = ?, tanggal_terbit = ?, bahasa = ?, kategori = ?, jumlah_halaman = ?, deskripsi_buku = ?, cover = ? 
+            SET judul_buku = ?, pengarang = ?, penerbit = ?, tanggal_terbit = ?, bahasa = ?, kategori = ?, stok = ?, jumlah_halaman = ?, deskripsi_buku = ?, cover = ? 
             WHERE kode_buku = ?
         ");
-        $stmt->execute([$judul_buku, $pengarang, $penerbit, $tanggal_terbit, $bahasa, $kategori, $jumlah_halaman, $deskripsi_buku, $cover_name, $kode_buku]);
+        $stmt->execute([$judul_buku, $pengarang, $penerbit, $tanggal_terbit, $bahasa, $kategori, $stok, $jumlah_halaman, $deskripsi_buku, $cover_name, $kode_buku]);
 
         if ($stmt->rowCount() > 0) {
             echo "<script>
