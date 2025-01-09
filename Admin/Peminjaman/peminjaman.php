@@ -125,10 +125,12 @@ $result->execute();
                 <button class="btn btn-info btn-sm rounded-2 text-white" onclick="printData('<?= $row['kode_pinjam']; ?>')">
                   <i class="fas fa-print"></i> Print
                 </button>
-                <button class="btn btn-success btn-sm rounded-2 text-white"
-                  onclick="window.open('https://wa.me/<?= $row['no_telp']; ?>?text=Halo%20<?= urlencode($row['nama_anggota']); ?>,%20buku%20yang%20Anda%20pinjam%20sudah%20melewati%20estimasi%20pengembalian.%20Mohon%20dikembalikan%20segera.', '_blank')">
-                  <i class="fab fa-whatsapp"></i> Chat
-                </button>
+                <?php if ($row['status'] === 'Dipinjam'): ?>
+                  <button class="btn btn-success btn-sm rounded-2 text-white"
+                    onclick="window.open('https://wa.me/<?= $row['no_telp']; ?>?text=Halo%20<?= urlencode($row['nama_anggota']); ?>,%20buku%20yang%20Anda%20pinjam%20sudah%20melewati%20estimasi%20pengembalian.%20Mohon%20dikembalikan%20segera.', '_blank')">
+                    <i class="fab fa-whatsapp"></i> Chat
+                  </button>
+                <?php endif; ?>
               </td>
             </tr>
           <?php endwhile; ?>
