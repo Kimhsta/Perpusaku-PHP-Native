@@ -155,7 +155,7 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
         <!-- Flex Container for Calendar and Lists -->
         <div class="row">
             <div class="col-md-6">
-                <div class="calendar border border-secondary border-opacity-75 p-3 rounded-4 d-flex">
+                <div class="calendar border border-secondary border-opacity-75 p-3 rounded-3 d-flex me-3">
                     <!-- Calendar Section -->
                     <div class="calendar-content flex-grow-1">
                         <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
@@ -173,41 +173,39 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                 </div>
             </div>
             <!-- Daftar Pengembalian yang Perlu Dikembalikan -->
-            <div class="container col-md-6">
+            <div class="col-md-6">
                 <!-- Pengembalian yang Perlu Dikembalikan -->
-                <div class="mb-4">
-                    <div class="card shadow-sm p-3 border-0 rounded-4" style="background-color: #f0f9ff;">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="icon-box rounded-circle text-center" style="background-color: #d1f2ff; width: 50px; height: 50px;">
-                                <i class="bx bx-time-five text-primary" style="font-size: 24px; line-height: 50px;"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-bold mb-0">Perlu Dikembalikan</h5>
-                                <p class="text-muted small">Daftar buku yang harus segera dikembalikan</p>
-                            </div>
+                <div class="d-flex card shadow-sm p-3 border-0 rounded-4" style="background-color: #f0f9ff;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="icon-box rounded-circle text-center" style="background-color: #d1f2ff; width: 50px; height: 50px;">
+                            <i class="bx bx-time-five text-primary" style="font-size: 24px; line-height: 50px;"></i>
                         </div>
-                        <hr>
                         <div>
-                            <?php if ($stmtPinjamKembali->rowCount() > 0): ?>
-                                <?php while ($row = $stmtPinjamKembali->fetch(PDO::FETCH_ASSOC)): ?>
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <div>
-                                            <h6 class="fw-bold text-dark mb-0">Kode: <?= htmlspecialchars($row['kode_pinjam']); ?></h6>
-                                            <p class="text-muted mb-0 small">Nama: <?= htmlspecialchars($row['nama']); ?></p>
-                                            <p class="text-muted small">Estimasi: <?= htmlspecialchars($row['estimasi_pinjam']); ?></p>
-                                        </div>
-                                        <div class="badge bg-primary text-white p-2">Pinjam</div>
-                                    </div>
-                                <?php endwhile; ?>
-                            <?php else: ?>
-                                <p class="text-muted">Tidak ada peminjaman yang perlu dikembalikan.</p>
-                            <?php endif; ?>
+                            <h5 class="fw-bold mb-0">Perlu Dikembalikan</h5>
+                            <p class="text-muted small">Daftar buku yang harus segera dikembalikan</p>
                         </div>
+                    </div>
+                    <hr>
+                    <div>
+                        <?php if ($stmtPinjamKembali->rowCount() > 0): ?>
+                            <?php while ($row = $stmtPinjamKembali->fetch(PDO::FETCH_ASSOC)): ?>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <h6 class="fw-bold text-dark mb-0">Kode: <?= htmlspecialchars($row['kode_pinjam']); ?></h6>
+                                        <p class="text-muted mb-0 small">Nama: <?= htmlspecialchars($row['nama']); ?></p>
+                                        <p class="text-muted small">Estimasi: <?= htmlspecialchars($row['estimasi_pinjam']); ?></p>
+                                    </div>
+                                    <div class="badge bg-primary text-white p-2">Pinjam</div>
+                                </div>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <p class="text-muted">Tidak ada peminjaman yang perlu dikembalikan.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
 
                 <!-- Pengembalian Belum Lunas -->
-                <div class="mb-4">
+                <div class="mt-4">
                     <div class="card shadow-sm p-3 border-0 rounded-4" style="background-color: #fff8e6;">
                         <div class="d-flex align-items-center gap-3">
                             <div class="icon-box rounded-circle text-center" style="background-color: #ffe4b5; width: 50px; height: 50px;">
@@ -238,7 +236,6 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
