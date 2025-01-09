@@ -13,7 +13,16 @@ $totalResult = $totalQuery->fetch(PDO::FETCH_ASSOC);
 $totalRows = $totalResult['total'];
 $totalPages = ceil($totalRows / $limit);
 
-// Ambil data sesuai halaman
+$filter = isset($_GET['filter']) ? $_GET['filter'] : 'semua'; // Menangani filter
+
+$whereClause = '';
+if ($filter === 'belum_lunas') {
+  $whereClause = "WHERE pengembalian.status = 'Belum Lunas'";
+} elseif ($filter === 'lunas') {
+  $whereClause = "WHERE pengembalian.status = 'Lunas'";
+}
+
+// Update query untuk menambahkan kondisi WHERE berdasarkan filter
 $result = $conn->prepare("
     SELECT pengembalian.kode_kembali, pengembalian.tgl_kembali, pengembalian.kode_pinjam, 
            pengembalian.kondisi_buku, pengembalian.denda, pengembalian.status, 
@@ -23,8 +32,10 @@ $result = $conn->prepare("
     JOIN peminjaman ON pengembalian.kode_pinjam = peminjaman.kode_pinjam
     JOIN anggota ON peminjaman.nim = anggota.nim
     JOIN buku ON peminjaman.kode_buku = buku.kode_buku
+    $whereClause
     LIMIT :limit OFFSET :offset
 ");
+
 
 $result->bindValue(':limit', $limit, PDO::PARAM_INT);
 $result->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -39,19 +50,46 @@ $result->execute();
 
       <!-- Bagian Tombol dan Pencarian -->
       <div class="d-flex align-items-center gap-3">
+        <!-- Filter Status -->
+        <div class="dropdown">
+          <!-- Tombol Filter -->
+          <button class="btn btn-light border d-flex align-items-center"
+            type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bx bx-filter-alt me-2"></i> Filter
+          </button>
+          <!-- Menu Dropdown -->
+          <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+            <li>
+              <a class="dropdown-item d-flex align-items-center <?= $filter === 'semua' ? 'active' : ''; ?>" href="?filter=semua">
+                <i class="bx bx-check-circle me-2"></i> Semua
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center <?= $filter === 'belum_lunas' ? 'active' : ''; ?>" href="?filter=belum_lunas">
+                <i class="bx bx-book-open me-2"></i> Belum Lunas
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center <?= $filter === 'lunas' ? 'active' : ''; ?>" href="?filter=lunas">
+                <i class="bx bx-check-circle me-2"></i> Lunas
+              </a>
+            </li>
+          </ul>
+        </div>
+
         <!-- Input Pencarian -->
         <div class="input-group" style="max-width: 250px;">
           <span class="input-group-text bg-primary text-white"><i class="fas fa-search"></i></span>
           <input type="text" class="form-control" id="search" placeholder="Cari Pengembalian..." onkeyup="searchTable()">
         </div>
-          <!-- Tombol Print -->
+        <!-- Tombol Print -->
         <button class="btn btn-info shadow-sm text-white" onclick="printAll()">
           <i class="fas fa-print"></i> Cetak Semua
         </button>
-            <!-- Tombol Tambah Pengembalian -->
+        <!-- Tombol Tambah Pengembalian -->
         <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahPengembalianModal">
           <i class="fas fa-plus"></i> Tambah
-         </button>
+        </button>
       </div>
     </div>
 
@@ -72,66 +110,66 @@ $result->execute();
         </thead>
         <tbody>
           <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
-          <tr>
-            <td class="text-center"><?= $row['kode_kembali']; ?></td>
-            <td><?= $row['nama_anggota']; ?></td>
-            <td><?= $row['judul_buku']; ?></td>
-            <td><?= date('d-m-Y', strtotime(datetime: $row['tgl_kembali'])); ?></td>
-            <td>
-  <?php if ($row['kondisi_buku'] == 'Bagus') { ?>
-    <span class="badge rounded-4" style="background-color: rgba(72, 207, 255, 0.2); color: #48cfff; padding: 10px 20px; font-weight: bold; display: inline-block; text-align: center;">Bagus</span>
-  <?php } elseif ($row['kondisi_buku'] == 'Rusak') { ?>
-    <span class="badge rounded-4" style="background-color: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 10px 20px; font-weight: bold; display: inline-block; text-align: center;">Rusak</span>
-  <?php } else { ?>
-    <span class="badge rounded-4" style="background-color: rgba(244, 67, 54, 0.2); color: #f44336; padding: 10px 20px; font-weight: bold; display: inline-block; text-align: center;">Hilang</span>
-  <?php } ?>
-</td>
+            <tr>
+              <td class="text-center"><?= $row['kode_kembali']; ?></td>
+              <td><?= $row['nama_anggota']; ?></td>
+              <td><?= $row['judul_buku']; ?></td>
+              <td><?= date('d-m-Y', strtotime(datetime: $row['tgl_kembali'])); ?></td>
+              <td>
+                <?php if ($row['kondisi_buku'] == 'Bagus') { ?>
+                  <span class="badge rounded-4" style="background-color: rgba(72, 207, 255, 0.2); color: #48cfff; padding: 10px 20px; font-weight: bold; display: inline-block; text-align: center;">Bagus</span>
+                <?php } elseif ($row['kondisi_buku'] == 'Rusak') { ?>
+                  <span class="badge rounded-4" style="background-color: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 10px 20px; font-weight: bold; display: inline-block; text-align: center;">Rusak</span>
+                <?php } else { ?>
+                  <span class="badge rounded-4" style="background-color: rgba(244, 67, 54, 0.2); color: #f44336; padding: 10px 20px; font-weight: bold; display: inline-block; text-align: center;">Hilang</span>
+                <?php } ?>
+              </td>
 
-            <td>Rp<?= number_format($row['denda'], 2, ',', '.'); ?></td>
-            <td>
-  <?php if ($row['status'] == 'Lunas') { ?>
-    <span class="badge rounded-4" style="background-color: rgba(56, 193, 114, 0.2); color: #38c172; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Lunas</span>
-  <?php } else { ?>
-    <span class="badge rounded-4" style="background-color: rgba(244, 67, 54, 0.2); color: #f44336; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Belum Lunas</span>
-  <?php } ?>
-</td>
+              <td>Rp<?= number_format($row['denda'], 2, ',', '.'); ?></td>
+              <td>
+                <?php if ($row['status'] == 'Lunas') { ?>
+                  <span class="badge rounded-4" style="background-color: rgba(56, 193, 114, 0.2); color: #38c172; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Lunas</span>
+                <?php } else { ?>
+                  <span class="badge rounded-4" style="background-color: rgba(244, 67, 54, 0.2); color: #f44336; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Belum Lunas</span>
+                <?php } ?>
+              </td>
 
-<td>
-  <?php if ($row['pembayaran'] == 'Tidak Ada') { ?>
-    <span class="badge rounded-4" style="background-color: rgba(158, 158, 158, 0.2); color: #9e9e9e; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Tidak Ada</span>
-  <?php } elseif ($row['pembayaran'] == 'Kes') { ?>
-    <span class="badge rounded-4" style="background-color: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Kes</span>
-  <?php } else { ?>
-    <span class="badge rounded-4" style="background-color: rgba(33, 150, 243, 0.2); color: #2196f3; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Transfer</span>
-  <?php } ?>
-</td>
+              <td>
+                <?php if ($row['pembayaran'] == 'Tidak Ada') { ?>
+                  <span class="badge rounded-4" style="background-color: rgba(158, 158, 158, 0.2); color: #9e9e9e; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Tidak Ada</span>
+                <?php } elseif ($row['pembayaran'] == 'Kes') { ?>
+                  <span class="badge rounded-4" style="background-color: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Kes</span>
+                <?php } else { ?>
+                  <span class="badge rounded-4" style="background-color: rgba(33, 150, 243, 0.2); color: #2196f3; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Transfer</span>
+                <?php } ?>
+              </td>
 
-            <td class="text-center">
-            <?php if ($row['status'] == 'Belum Lunas'): ?>
-    <button class="btn btn-warning btn-sm rounded-2 text-white" data-bs-toggle="modal" data-bs-target="#editPengembalianModal" onclick="loadEditForm('<?= $row['kode_kembali']; ?>')">
-      <i class="fas fa-edit"></i> Edit
-    </button>
-  <?php else: ?>
-    <button class="btn btn-secondary btn-sm rounded-2 text-white" disabled>
-      <i class="fas fa-edit"></i> Edit
-    </button>
-  <?php endif; ?>
-              <button class="btn btn-info btn-sm text-white rounded-2" onclick="printData('<?= $row['kode_kembali']; ?>')">
-                <i class="fas fa-print"></i> Print
-              </button>
-              <?php if ($row['status'] === 'Belum Lunas'): ?>
-                <a href="https://wa.me/<?= $row['no_telp']; ?>?text=Halo%20<?= urlencode($row['nama_anggota']); ?>,%20kami%20ingin%20mengingatkan%20bahwa%20Anda%20memiliki%20denda%20pengembalian%20buku%20sebesar%20Rp<?= number_format($row['denda'], 0, ',', '.'); ?>.%0A%0A%20Silakan%20segera%20melunasi.%20Transfer%20Pelunasan%20bisa%20melalui%20salah%20satu%20No%20Rekening%20Kami%20berikut:%0A%0A%20Dana%20:%20085777219250%0A%20Gopay%20:%20085777219250%0A%20Bank%20Jago%20:%20109060269590%0A%0A%20Jika%20sudah%20transfer%20mohon%20segera%20konfirmasi.%20Terima%20Kasih." 
-                target="_blank" 
-       class="btn btn-success btn-sm rounded-2 text-white">
-      <i class="fab fa-whatsapp"></i> Chat
-    </a>
-  <?php else: ?>
-    <button class="btn btn-secondary btn-sm rounded-2 text-white" disabled>
-      <i class="fab fa-whatsapp"></i> Chat
-    </button>
-  <?php endif; ?>
-            </td>
-          </tr>
+              <td class="text-center">
+                <?php if ($row['status'] == 'Belum Lunas'): ?>
+                  <button class="btn btn-warning btn-sm rounded-2 text-white" data-bs-toggle="modal" data-bs-target="#editPengembalianModal" onclick="loadEditForm('<?= $row['kode_kembali']; ?>')">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                <?php else: ?>
+                  <button class="btn btn-secondary btn-sm rounded-2 text-white" disabled>
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                <?php endif; ?>
+                <button class="btn btn-info btn-sm text-white rounded-2" onclick="printData('<?= $row['kode_kembali']; ?>')">
+                  <i class="fas fa-print"></i> Print
+                </button>
+                <?php if ($row['status'] === 'Belum Lunas'): ?>
+                  <a href="https://wa.me/<?= $row['no_telp']; ?>?text=Halo%20<?= urlencode($row['nama_anggota']); ?>,%20kami%20ingin%20mengingatkan%20bahwa%20Anda%20memiliki%20denda%20pengembalian%20buku%20sebesar%20Rp<?= number_format($row['denda'], 0, ',', '.'); ?>.%0A%0A%20Silakan%20segera%20melunasi.%20Transfer%20Pelunasan%20bisa%20melalui%20salah%20satu%20No%20Rekening%20Kami%20berikut:%0A%0A%20Dana%20:%20085777219250%0A%20Gopay%20:%20085777219250%0A%20Bank%20Jago%20:%20109060269590%0A%0A%20Jika%20sudah%20transfer%20mohon%20segera%20konfirmasi.%20Terima%20Kasih."
+                    target="_blank"
+                    class="btn btn-success btn-sm rounded-2 text-white">
+                    <i class="fab fa-whatsapp"></i> Chat
+                  </a>
+                <?php else: ?>
+                  <button class="btn btn-secondary btn-sm rounded-2 text-white" disabled>
+                    <i class="fab fa-whatsapp"></i> Chat
+                  </button>
+                <?php endif; ?>
+              </td>
+            </tr>
           <?php endwhile; ?>
         </tbody>
       </table>
@@ -236,16 +274,14 @@ $result->execute();
     });
   }
 
-// Fitur Print
-function printData(kode_kembali) {
-  // Redirect ke halaman cetak atau buka pop-up untuk mencetak
-  window.open(`print_pengembalian.php?kode_kembali=${kode_kembali}`, '_blank', 'width=800,height=600');
-}
+  // Fitur Print
+  function printData(kode_kembali) {
+    // Redirect ke halaman cetak atau buka pop-up untuk mencetak
+    window.open(`print_pengembalian.php?kode_kembali=${kode_kembali}`, '_blank', 'width=800,height=600');
+  }
 
-function printAll() {
-  // Redirect ke halaman cetak seluruh data
-  window.open('print_all_pengembalian.php', '_blank', 'width=800,height=600');
-}
-
-
+  function printAll() {
+    // Redirect ke halaman cetak seluruh data
+    window.open('print_all_pengembalian.php', '_blank', 'width=800,height=600');
+  }
 </script>
