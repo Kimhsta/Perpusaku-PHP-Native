@@ -143,32 +143,27 @@ $result->execute();
                   <span class="badge rounded-4" style="background-color: rgba(33, 150, 243, 0.2); color: #2196f3; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Transfer</span>
                 <?php } ?>
               </td>
-
               <td class="text-center">
                 <?php if ($row['status'] == 'Belum Lunas'): ?>
                   <button class="btn btn-warning btn-sm rounded-2 text-white" data-bs-toggle="modal" data-bs-target="#editPengembalianModal" onclick="loadEditForm('<?= $row['kode_kembali']; ?>')">
                     <i class="fas fa-edit"></i> Edit
                   </button>
-                <?php else: ?>
-                  <button class="btn btn-secondary btn-sm rounded-2 text-white" disabled>
-                    <i class="fas fa-edit"></i> Edit
+                  <button class="btn btn-info btn-sm text-white rounded-2" onclick="printData('<?= $row['kode_kembali']; ?>')">
+                    <i class="fas fa-print"></i> Print
                   </button>
-                <?php endif; ?>
-                <button class="btn btn-info btn-sm text-white rounded-2" onclick="printData('<?= $row['kode_kembali']; ?>')">
-                  <i class="fas fa-print"></i> Print
-                </button>
-                <?php if ($row['status'] === 'Belum Lunas'): ?>
                   <a href="https://wa.me/<?= $row['no_telp']; ?>?text=Halo%20<?= urlencode($row['nama_anggota']); ?>,%20kami%20ingin%20mengingatkan%20bahwa%20Anda%20memiliki%20denda%20pengembalian%20buku%20sebesar%20Rp<?= number_format($row['denda'], 0, ',', '.'); ?>.%0A%0A%20Silakan%20segera%20melunasi.%20Transfer%20Pelunasan%20bisa%20melalui%20salah%20satu%20No%20Rekening%20Kami%20berikut:%0A%0A%20Dana%20:%20085777219250%0A%20Gopay%20:%20085777219250%0A%20Bank%20Jago%20:%20109060269590%0A%0A%20Jika%20sudah%20transfer%20mohon%20segera%20konfirmasi.%20Terima%20Kasih."
-                    target="_blank"
-                    class="btn btn-success btn-sm rounded-2 text-white">
+                    target="_blank" class="btn btn-success btn-sm rounded-2 text-white">
                     <i class="fab fa-whatsapp"></i> Chat
                   </a>
                 <?php else: ?>
-                  <button class="btn btn-secondary btn-sm rounded-2 text-white" disabled>
-                    <i class="fab fa-whatsapp"></i> Chat
+                  <!-- Jika sudah Lunas hanya tampil tombol Print -->
+                  <button class="btn btn-info btn-sm text-white rounded-2" onclick="printData('<?= $row['kode_kembali']; ?>')">
+                    <i class="fas fa-print"></i> Print
                   </button>
                 <?php endif; ?>
               </td>
+
+
             </tr>
           <?php endwhile; ?>
         </tbody>
