@@ -111,13 +111,16 @@ $result->execute();
                 <button class="btn btn-info btn-sm rounded-2 text-white" data-bs-toggle="modal" data-bs-target="#detailBukuModal" onclick="loadDetailForm('<?= $row['kode_buku']; ?>')">
                   <i class="fas fa-info-circle"></i> Detail
                 </button>
-                <button class="btn btn-warning btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#editBukuModal" onclick="loadEditForm('<?= $row['kode_buku']; ?>')">
-                  <i class="fas fa-edit"></i> Edit
-                </button>
-                <button class="btn btn-danger btn-sm rounded-2" onclick="confirmDelete('<?= $row['kode_buku']; ?>')">
-                  <i class="fas fa-trash-alt"></i> Delete
-                </button>
+                <?php if ($row['status'] !== 'Kosong'): ?>
+                  <button class="btn btn-warning btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#editBukuModal" onclick="loadEditForm('<?= $row['kode_buku']; ?>')">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                  <button class="btn btn-danger btn-sm rounded-2" onclick="confirmDelete('<?= $row['kode_buku']; ?>')">
+                    <i class="fas fa-trash-alt"></i> Delete
+                  </button>
+                <?php endif; ?>
               </td>
+
             </tr>
           <?php endwhile; ?>
         </tbody>
