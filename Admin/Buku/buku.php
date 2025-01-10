@@ -131,7 +131,7 @@ $result->execute();
         <ul class="pagination d-flex justify-content-between align-items-center me-4 ms-4">
           <!-- Tombol Previous -->
           <li class="page-item <?= ($page <= 1) ? 'disabled' : ''; ?>">
-            <a class="page-link" href="?page=<?= $page - 1; ?>" aria-label="Previous">
+            <a class="page-link" href="?page=<?= $page - 1; ?>&filter=<?= $filterStatus; ?>" aria-label="Previous">
               <span aria-hidden="true">&laquo; Previous</span>
             </a>
           </li>
@@ -140,19 +140,20 @@ $result->execute();
           <div class="d-flex justify-content-center flex-grow-1">
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
               <li class="page-item <?= ($i == $page) ? 'active' : ''; ?>">
-                <a class="page-link" href="?page=<?= $i; ?>"><?= $i; ?></a>
+                <a class="page-link" href="?page=<?= $i; ?>&filter=<?= $filterStatus; ?>"><?= $i; ?></a>
               </li>
             <?php endfor; ?>
           </div>
 
           <!-- Tombol Next -->
           <li class="page-item <?= ($page >= $totalPages) ? 'disabled' : ''; ?>">
-            <a class="page-link" href="?page=<?= $page + 1; ?>" aria-label="Next">
+            <a class="page-link" href="?page=<?= $page + 1; ?>&filter=<?= $filterStatus; ?>" aria-label="Next">
               <span aria-hidden="true">Next &raquo;</span>
             </a>
           </li>
         </ul>
       </nav>
+
     </div>
 
     <!-- Modal Tambah Buku -->

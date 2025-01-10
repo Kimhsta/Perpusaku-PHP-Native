@@ -169,25 +169,21 @@ $result->execute();
         </tbody>
       </table>
 
-      <!-- Navigasi Pagination -->
+      <!-- Halaman dan Filter -->
       <nav class="mt-4">
-        <ul class="pagination d-flex justify-content-between align-items-center me-4 ms-4">
+        <ul class="pagination d-flex justify-content-between align-items-center">
           <li class="page-item <?= ($page <= 1) ? 'disabled' : ''; ?>">
-            <a class="page-link" href="?page=<?= $page - 1; ?>" aria-label="Previous">
-              <span aria-hidden="true">&laquo; Previous</span>
-            </a>
+            <a class="page-link" href="?filter=<?= $filter; ?>&page=<?= $page - 1; ?>">&laquo; Previous</a>
           </li>
-          <div class="d-flex justify-content-center flex-grow-1">
+          <div class="d-flex justify-content-center">
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
               <li class="page-item <?= ($i == $page) ? 'active' : ''; ?>">
-                <a class="page-link" href="?page=<?= $i; ?>"><?= $i; ?></a>
+                <a class="page-link" href="?filter=<?= $filter; ?>&page=<?= $i; ?>"><?= $i; ?></a>
               </li>
             <?php endfor; ?>
           </div>
           <li class="page-item <?= ($page >= $totalPages) ? 'disabled' : ''; ?>">
-            <a class="page-link" href="?page=<?= $page + 1; ?>" aria-label="Next">
-              <span aria-hidden="true">Next &raquo;</span>
-            </a>
+            <a class="page-link" href="?filter=<?= $filter; ?>&page=<?= $page + 1; ?>">Next &raquo;</a>
           </li>
         </ul>
       </nav>
