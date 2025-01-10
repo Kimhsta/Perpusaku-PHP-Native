@@ -20,14 +20,14 @@ if (isset($_GET['kode_buku'])) {
                       </script>";
       } else {
         // Update stok menjadi 0 dan status menjadi 'Kosong'
-        $updateStmt = $conn->prepare("UPDATE buku SET stok = 0, status = 'Kosong' WHERE kode_buku = :kode_buku");
+        $updateStmt = $conn->prepare("UPDATE buku SET stok = -1, status = 'Kosong' WHERE kode_buku = :kode_buku");
         $updateStmt->bindParam(':kode_buku', $kode_buku, PDO::PARAM_STR);
         $updateStmt->execute();
 
-        if ($updateStmt->rowCount() > 0) {
+        if ($updateStmt->rowCount() > -1) {
           // Alert sukses
           echo "<script>
-                            alert('Stok buku berhasil diubah menjadi 0 dan status menjadi Kosong.');
+                            alert('Buku Tidak lagi Diproduksi');
                             window.location.href = 'buku.php';
                           </script>";
         } else {
