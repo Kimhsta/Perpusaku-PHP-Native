@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $result = $checkPeminjamanStmt->fetch(PDO::FETCH_ASSOC);
 
   if ($result['total_pinjaman'] >= 2) {
-      echo "<script>
+    echo "<script>
               alert('Anggota ini sudah meminjam 2 buku. Tidak dapat meminjam lagi.');
               window.location.href = 'peminjaman.php';
             </script>";
-      exit;
+    exit;
   }
 
   // Generate kode_pinjam otomatis
@@ -38,33 +38,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $stmt = $conn->prepare($sql);
 
   try {
-      // Insert data peminjaman
-      $stmt->execute([
-          ':kode_pinjam' => $kode_pinjam,
-          ':nim' => $nim,
-          ':kode_buku' => $kode_buku,
-          ':id_petugas' => $id_petugas,
-          ':tgl_pinjam' => $tgl_pinjam,
-          ':estimasi_pinjam' => $estimasi_pinjam,
-          ':kondisi_buku_pinjam' => $kondisi_buku_pinjam
-      ]);
+    // Insert data peminjaman
+    $stmt->execute([
+      ':kode_pinjam' => $kode_pinjam,
+      ':nim' => $nim,
+      ':kode_buku' => $kode_buku,
+      ':id_petugas' => $id_petugas,
+      ':tgl_pinjam' => $tgl_pinjam,
+      ':estimasi_pinjam' => $estimasi_pinjam,
+      ':kondisi_buku_pinjam' => $kondisi_buku_pinjam
+    ]);
 
-      // Kurangi stok buku
-      $updateStokSql = "UPDATE buku SET stok = stok - 1 WHERE kode_buku = :kode_buku";
-      $updateStokStmt = $conn->prepare($updateStokSql);
-      $updateStokStmt->execute([':kode_buku' => $kode_buku]);
+    // Kurangi stok buku
+    $updateStokSql = "UPDATE buku SET stok = stok - 1 WHERE kode_buku = :kode_buku";
+    $updateStokStmt = $conn->prepare($updateStokSql);
+    $updateStokStmt->execute([':kode_buku' => $kode_buku]);
 
-      echo "<script>
+    echo "<script>
               alert('Peminjaman berhasil ditambahkan!');
               window.location.href = 'peminjaman.php';
             </script>";
-      exit;
+    exit;
   } catch (PDOException $e) {
-      echo "<script>
+    echo "<script>
               alert('Gagal menambahkan peminjaman: " . addslashes($e->getMessage()) . "');
               window.location.href = 'peminjaman.php';
             </script>";
-      exit;
+    exit;
   }
 }
 
@@ -91,15 +91,10 @@ $petugas = $conn->query("SELECT id_petugas, nama_petugas FROM petugas")->fetchAl
         </div>
       </div>
       <div class="col-md-6">
-        <!-- Pilih Buku -->
+        <!-- Tanggal Pinjam -->
         <div class="mb-3">
-          <label for="kode_buku" class="form-label">Buku</label>
-          <select name="kode_buku" id="kode_buku" class="form-select" required>
-            <option value="">Pilih Buku</option>
-            <?php foreach ($buku as $b): ?>
-              <option value="<?= $b['kode_buku']; ?>"><?= $b['kode_buku']; ?> - <?= $b['judul_buku']; ?></option>
-            <?php endforeach; ?>
-          </select>
+          <label for="tgl_pinjam" class="form-label">Tanggal Pinjam</label>
+          <input type="date" name="tgl_pinjam" id="tgl_pinjam" class="form-control" required>
         </div>
       </div>
     </div>
@@ -116,20 +111,27 @@ $petugas = $conn->query("SELECT id_petugas, nama_petugas FROM petugas")->fetchAl
           </select>
         </div>
       </div>
-      <div class="col-md-6">
-        <!-- Tanggal Pinjam -->
-        <div class="mb-3">
-          <label for="tgl_pinjam" class="form-label">Tanggal Pinjam</label>
-          <input type="date" name="tgl_pinjam" id="tgl_pinjam" class="form-control" required>
-        </div>
-      </div>
-    </div>
-    <div class="row">
+
       <div class="col-md-6">
         <!-- Estimasi Pinjam -->
         <div class="mb-3">
           <label for="estimasi_pinjam" class="form-label">Estimasi Pinjam</label>
           <input type="date" name="estimasi_pinjam" id="estimasi_pinjam" class="form-control" required>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+
+      <div class="col-md-6">
+        <!-- Pilih Buku -->
+        <div class="mb-3">
+          <label for="kode_buku" class="form-label">Buku</label>
+          <select name="kode_buku" id="kode_buku" class="form-select" required>
+            <option value="">Pilih Buku</option>
+            <?php foreach ($buku as $b): ?>
+              <option value="<?= $b['kode_buku']; ?>"><?= $b['kode_buku']; ?> - <?= $b['judul_buku']; ?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
       </div>
       <div class="col-md-6">
@@ -142,6 +144,9 @@ $petugas = $conn->query("SELECT id_petugas, nama_petugas FROM petugas")->fetchAl
           </select>
         </div>
       </div>
+    </div>
+    <div>
+      <span class="text-danger">* Maksimal peminjaman adalah 7 hari dari tanggal pinjam.</span>
     </div>
     <div class="d-flex justify-content-end mt-4">
       <button type="submit" class="btn btn-primary">Tambah Peminjaman</button>
