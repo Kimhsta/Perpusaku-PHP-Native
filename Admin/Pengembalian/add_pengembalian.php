@@ -104,39 +104,53 @@ $peminjaman = $conn->query("
 ?>
 
 <div class="container">
-  <form action="add_pengembalian.php" method="POST">
-    <!-- Pilih Peminjaman -->
-    <div class="mb-3">
-      <label for="kode_pinjam" class="form-label">Kode Peminjaman</label>
-      <select name="kode_pinjam" id="kode_pinjam" class="form-select" required>
-        <option value="">Pilih Kode Peminjaman</option>
-        <?php foreach ($peminjaman as $p): ?>
-          <option value="<?= $p['kode_pinjam']; ?>"><?= $p['kode_pinjam']; ?></option>
-        <?php endforeach; ?>
-      </select>
-    </div>
-
-    <!-- Kondisi Buku -->
-    <div class="mb-3">
-      <label for="kondisi_buku" class="form-label">Kondisi Buku</label>
-      <select name="kondisi_buku" id="kondisi_buku" class="form-select" required>
-        <option value="bagus">Bagus</option>
-        <option value="rusak">Rusak</option>
-        <option value="hilang">Hilang</option>
-      </select>
-    </div>
-
-    <!-- Pilihan Pembayaran jika buku rusak/hilang -->
-    <?php if (isset($kondisi_buku) && ($kondisi_buku == 'rusak' || $kondisi_buku == 'hilang')): ?>
+    <form action="add_pengembalian.php" method="POST">
+        <!-- Pencarian Kode Peminjaman -->
         <div class="mb-3">
-            <label for="pembayaran" class="form-label">Status Pembayaran</label>
-            <select name="pembayaran" id="pembayaran" class="form-select">
-                <option value="Lunas">Lunas</option>
-                <option value="Belum Lunas">Belum Lunas</option>
+            <label for="kode_pinjam" class="form-label">Kode Peminjaman</label>
+            <input type="text" id="kode_pinjam" name="kode_pinjam" class="form-control" onkeyup="searchKodePinjam()" required>
+            <div id="search_results" class="mt-2"></div> <!-- Menampilkan hasil pencarian -->
+        </div>
+
+        <!-- Kondisi Buku -->
+        <div class="mb-3">
+            <label for="kondisi_buku" class="form-label">Kondisi Buku</label>
+            <select name="kondisi_buku" id="kondisi_buku" class="form-select" required>
+                <option value="bagus">Bagus</option>
+                <option value="rusak">Rusak</option>
+                <option value="hilang">Hilang</option>
             </select>
         </div>
-    <?php endif; ?>
 
-    <button type="submit" class="btn btn-primary">Proses Pengembalian</button>
-  </form>
+        <button type="submit" class="btn btn-primary">Proses Pengembalian</button>
+    </form>
 </div>
+
+<script>
+    // Fungsi pencarian kode peminjaman
+    function searchKodePinjam() {
+        const kodePinjam = document.getElementById('kode_pinjam').value;
+
+        if (kodePinjam.length > 0) {
+            // Menggunakan AJAX untuk mencari data
+            fetch('search_kode_pinjam.php?kode_pinjam=' + kodePinjam)
+                .then(response => response.json())
+                .then(data => {
+                    let html = '';
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            html += `<div>
+                        <strong>Kode:</strong> ${item.kode_pinjam} <br>
+                        <strong>Nama Anggota:</strong> ${item.nama_anggota}
+                      </div><hr>`;
+                        });
+                    } else {
+                        html = 'Tidak ada hasil yang ditemukan';
+                    }
+                    document.getElementById('search_results').innerHTML = html;
+                });
+        } else {
+            document.getElementById('search_results').innerHTML = '';
+        }
+    }
+</script>

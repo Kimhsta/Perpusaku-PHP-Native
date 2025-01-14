@@ -58,28 +58,28 @@ $result->execute();
         </thead>
         <tbody>
           <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
-          <tr>
-            <td class="text-center"><?= $row['id_petugas']; ?></td>
-            <td>
-  <img src="../../Assets/uploads/<?= $row['profil_gambar']; ?>" alt="Profil Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
-</td>
+            <tr>
+              <td class="text-center"><?= $row['id_petugas']; ?></td>
+              <td>
+                <img src="../../Assets/uploads/<?= $row['profil_gambar']; ?>" alt="Profil Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+              </td>
 
-            <td><?= $row['nama_petugas']; ?></td>
-            <td><?= $row['username']; ?></td>
-            <td><?= $row['no_telp']; ?></td>
-            <td><?= $row['jenis_kelamin']; ?></td>
-            <td class="text-center">
-              <button class="btn btn-warning btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#editPetugasModal" onclick="loadEditForm('<?= $row['id_petugas']; ?>')">
-                <i class="fas fa-edit"></i> Edit
-              </button>
-              <button class="btn btn-danger btn-sm rounded-2" onclick="confirmDelete('<?= $row['id_petugas']; ?>')">
-                <i class="fas fa-trash"></i> Delete
-              </button>
-              <button class="btn btn-success btn-sm rounded-2" onclick="printPetugas('<?= $row['id_petugas']; ?>')">
-                <i class="fas fa-print"></i> Print
-              </button>
-            </td>
-          </tr>
+              <td><?= $row['nama_petugas']; ?></td>
+              <td><?= $row['username']; ?></td>
+              <td><?= $row['no_telp']; ?></td>
+              <td><?= $row['jenis_kelamin']; ?></td>
+              <td class="text-center">
+                <button class="btn btn-warning btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#editPetugasModal" onclick="loadEditForm('<?= $row['id_petugas']; ?>')">
+                  <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="btn btn-danger btn-sm rounded-2" onclick="confirmDelete('<?= $row['id_petugas']; ?>')">
+                  <i class="fas fa-trash"></i> Delete
+                </button>
+                <button class="btn btn-success btn-sm rounded-2" onclick="printPetugas('<?= $row['id_petugas']; ?>')">
+                  <i class="fas fa-print"></i> Print
+                </button>
+              </td>
+            </tr>
           <?php endwhile; ?>
         </tbody>
       </table>
@@ -146,17 +146,17 @@ $result->execute();
 
 <script>
   // Function to print petugas
-function printPetugas(id_petugas) {
-  const printWindow = window.open(`print_petugas.php?id_petugas=${id_petugas}`, '_blank');
-  printWindow.focus();
-}
-
-//Ajax Delet Petugas
-function confirmDelete(id_petugas) {
-  if (confirm("Apakah Anda yakin ingin menghapus petugas ini?")) {
-    window.location.href = "delete_petugas.php?id_petugas=" + id_petugas;
+  function printPetugas(id_petugas) {
+    const printWindow = window.open(`print_petugas.php?id_petugas=${id_petugas}`, '_blank');
+    printWindow.focus();
   }
-}
+
+  //Ajax Delet Petugas
+  function confirmDelete(id_petugas) {
+    if (confirm("Apakah Anda yakin ingin menghapus petugas ini?")) {
+      window.location.href = "delete_petugas.php?id_petugas=" + id_petugas;
+    }
+  }
 
   // Ajax Edit Petugas
   function loadEditForm(id_petugas) {
@@ -171,7 +171,7 @@ function confirmDelete(id_petugas) {
         modalContent.innerHTML = '<p class="text-danger">Gagal memuat data</p>';
       });
   }
-  
+
   // Ajax Tambah Anggota
   document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('tambahPetugasModal');

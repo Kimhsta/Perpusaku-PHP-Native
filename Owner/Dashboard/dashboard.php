@@ -152,9 +152,9 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
 
         <!-- Flex Container for Calendar and Lists -->
         <div class="d-flex justify-content-between">
-            <div class="calendar border border-secondary border-opacity-75 p-3 rounded-3 d-flex me-4">
+            <div class="calendar border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
                 <!-- Calendar Section -->
-                <div class="calendar-content flex-grow-1">
+                <div class="calendar-content">
                     <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
                         <button id="prev" class="btn btn-primary">❮</button>
                         <h2 id="month-year" class="mb-0">January 2025</h2>
