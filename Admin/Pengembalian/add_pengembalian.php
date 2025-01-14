@@ -108,7 +108,7 @@ $peminjaman = $conn->query("
         <!-- Pencarian Kode Peminjaman -->
         <div class="mb-3">
             <label for="kode_pinjam" class="form-label">Kode Peminjaman</label>
-            <input type="text" id="kode_pinjam" name="kode_pinjam" class="form-control" onkeyup="searchKodePinjam()" required>
+            <input type="text" id="kode_pinjam" name="kode_pinjam" class="form-control" required>
             <div id="search_results" class="mt-2"></div> <!-- Menampilkan hasil pencarian -->
         </div>
 
@@ -127,30 +127,52 @@ $peminjaman = $conn->query("
 </div>
 
 <script>
-    // Fungsi pencarian kode peminjaman
-    function searchKodePinjam() {
-        const kodePinjam = document.getElementById('kode_pinjam').value;
+    // Fungsi untuk menangani autocomplete
+    function setupAutocomplete() {
+        const inputKodePinjam = document.getElementById('kode_pinjam');
+        const searchResults = document.getElementById('search_results');
 
-        if (kodePinjam.length > 0) {
-            // Menggunakan AJAX untuk mencari data
-            fetch('search_kode_pinjam.php?kode_pinjam=' + kodePinjam)
-                .then(response => response.json())
-                .then(data => {
-                    let html = '';
-                    if (data.length > 0) {
-                        data.forEach(item => {
-                            html += `<div>
-                        <strong>Kode:</strong> ${item.kode_pinjam} <br>
-                        <strong>Nama Anggota:</strong> ${item.nama_anggota}
-                      </div><hr>`;
-                        });
-                    } else {
-                        html = 'Tidak ada hasil yang ditemukan';
-                    }
-                    document.getElementById('search_results').innerHTML = html;
-                });
-        } else {
-            document.getElementById('search_results').innerHTML = '';
-        }
+        inputKodePinjam.addEventListener('input', function() {
+            const query = inputKodePinjam.value;
+
+            if (query.length > 0) {
+                fetch(`search_kode_pinjam.php?kode_pinjam=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let html = '';
+                        if (data.length > 0) {
+                            data.forEach(item => {
+                                html += `<div class="autocomplete-item" onclick="selectKodePinjam('${item.kode_pinjam}', '${item.nama_anggota}')">
+                                   <strong> ${item.kode_pinjam} - </strong> ${item.nama_anggota} <br>
+                                </div>`;
+                            });
+                        } else {
+                            html = '<div class="autocomplete-item">Tidak ada hasil yang ditemukan</div>';
+                        }
+                        searchResults.innerHTML = html;
+                        searchResults.style.display = 'block';
+                    });
+            } else {
+                searchResults.innerHTML = '';
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Fungsi untuk memilih item dari hasil autocomplete
+        window.selectKodePinjam = function(kodePinjam, namaAnggota) {
+            inputKodePinjam.value = kodePinjam;
+            searchResults.innerHTML = '';
+            searchResults.style.display = 'none';
+        };
+    }
+
+    // Panggil fungsi setupAutocomplete saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', setupAutocomplete);
+    console.log('Autocomplete script berjalan!');
+    const inputKodePinjam = document.getElementById('kode_pinjam');
+    if (inputKodePinjam) {
+        console.log('Elemen ditemukan:', inputKodePinjam);
+    } else {
+        console.log('Elemen #kode_pinjam tidak ditemukan!');
     }
 </script>

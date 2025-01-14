@@ -72,6 +72,23 @@
       background: #007bff;
       color: #fff;
     }
+
+    .autocomplete-item {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+    }
+
+    .autocomplete-item:hover {
+      background-color: #f1f1f1;
+    }
+
+    #search_results {
+      border: 1px solid #ddd;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+    }
   </style>
 </head>
 
