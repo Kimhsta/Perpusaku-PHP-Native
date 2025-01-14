@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
         </div>
         <div class="graphic-side">
-            <img src="../../Assets/img/logo.png" alt="Logo" class="img-fluid logo-style">
+            <img src="../../Assets/img/logorev.svg" alt="Logo" class="img-fluid logo-style">
         </div>
     </div>
 

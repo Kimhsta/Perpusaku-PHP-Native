@@ -21,7 +21,7 @@
     .calendar {
       background: #fff;
       border-radius: 25px;
-      width: 735px;
+      width: 800px;
       padding: 20px;
     }
 
