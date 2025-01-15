@@ -108,7 +108,9 @@ $result->execute();
               <td><?= $row['judul_buku']; ?></td>
               <td><?= $row['nama_petugas']; ?></td>
               <td><?= date('d-m-Y', strtotime($row['tgl_pinjam'])); ?></td>
-              <td><?= date('d-m-Y', strtotime($row['estimasi_pinjam'])); ?></td>
+              <td style="<?php if (strtotime(date('Y-m-d')) > strtotime($row['estimasi_pinjam']) && $row['status'] === 'Dipinjam') echo 'color: red;'; ?>">
+                <?= date('d-m-Y', strtotime($row['estimasi_pinjam'])); ?>
+              </td>
               <td>
                 <?php if ($row['kondisi_buku_pinjam'] == 'Bagus') { ?>
                   <span class="badge rounded-4" style="background-color: rgba(72, 207, 255, 0.2); color: #48cfff; padding: 10px 20px; font-weight: bold; display: inline-block; width: 100px; height: 28px; text-align: center;">Bagus</span>
