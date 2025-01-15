@@ -34,6 +34,7 @@ $result = $conn->prepare("
     JOIN anggota ON peminjaman.nim = anggota.nim
     JOIN buku ON peminjaman.kode_buku = buku.kode_buku
     $whereClause
+    ORDER BY pengembalian.tgl_kembali DESC
     LIMIT :limit OFFSET :offset
 ");
 
