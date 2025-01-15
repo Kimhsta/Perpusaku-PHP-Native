@@ -155,7 +155,7 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
         <!-- Flex Container for Calendar and Lists -->
         <div class="row">
             <div class="col-md-6">
-                <div class="calendar border border-secondary border-opacity-75 p-3 rounded-3 d-flex me-3">
+                <div class="calendar border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
                     <!-- Calendar Section -->
                     <div class="calendar-content flex-grow-1">
                         <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
@@ -167,8 +167,8 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                             <!-- Grid of days will go here -->
                         </div>
                     </div>
-                    <div class="anime-image ms-3" style="width: 50%; padding: 0px;">
-                        <img id="random-image" src="" alt="" class="img-fluid rounded-3 shadow-sm" />
+                    <div class="anime-image ms-3" style="width: 50%; padding: px;">
+                        <img id="random-image" src="" alt="" class="img-fluid rounded-3 border border-info border-4 border-opacity-50" />
                     </div>
                 </div>
             </div>
@@ -262,7 +262,7 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
     // Fungsi untuk menampilkan gambar secara acak
     function displayRandomImage() {
         // Daftar nama file gambar di folder ../../Assets/Anime Date
-        const images = ["anime1.jpg", "anime2.jpg", "anime3.jpg"];
+        const images = ["anime1.jpg", "anime2.jpg", "anime3.jpg", "anime4.jpg", "anime5.jpg", "anime6.jpg"];
 
         // Pilih gambar secara acak
         const randomIndex = Math.floor(Math.random() * images.length);

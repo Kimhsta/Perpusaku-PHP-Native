@@ -74,7 +74,7 @@
     }
 
     .day {
-      padding: 10px 0;
+      padding: 10px 12px;
       background: #e9ecef;
       border-radius: 25px;
       transition: background 0.3s ease, transform 0.3s ease;
