@@ -55,7 +55,7 @@ $result->execute();
       <!-- Bagian Tombol dan Pencarian -->
       <div class="d-flex align-items-between gap-3">
         <!-- Filter Anggota -->
-        <div class="dropdown">
+        <div class="dropdown rounded-3">
           <button class="btn btn-light border d-flex align-items-center"
             type="button" id="memberFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bx bx-filter-alt me-2"></i> Filter
@@ -80,14 +80,14 @@ $result->execute();
         </div>
 
         <!-- Input Pencarian -->
-        <div class="input-group" style="max-width: 200px;">
+        <div class="input-group rounded-3" style="max-width: 200px;">
           <span class="input-group-text bg-primary text-white"><i class="fas fa-search"></i></span>
           <input type="text" class="form-control" id="search" placeholder="Cari Anggota..." onkeyup="searchTable()">
         </div>
 
         <!-- Tombol Tambah Anggota -->
         <div>
-          <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahAnggotaModal">
+          <button class="btn btn-primary shadow-sm rounded-3" data-bs-toggle="modal" data-bs-target="#tambahAnggotaModal">
             <i class="fas fa-plus"></i> Tambah
           </button>
         </div>

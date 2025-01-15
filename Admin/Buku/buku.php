@@ -36,7 +36,7 @@ $result->execute();
       <div class="d-flex align-items-between gap-3">
 
         <!-- Tambahkan Dropdown Filter -->
-        <div class="dropdown">
+        <div class="dropdown  rounded-3">
           <!-- Tombol Filter -->
           <button class="btn btn-light border d-flex align-items-center"
             type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,14 +69,14 @@ $result->execute();
         </div>
 
         <!-- Input Pencarian -->
-        <div class="input-group" style="max-width: 200px;">
+        <div class="input-group  rounded-3" style="max-width: 200px;">
           <span class="input-group-text bg-primary text-white"><i class="fas fa-search"></i></span>
           <input type="text" class="form-control" id="search" placeholder="Cari Buku..." onkeyup="searchTable()">
         </div>
 
         <!-- Tombol Tambah Buku -->
         <div>
-          <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahBukuModal">
+          <button class="btn btn-primary shadow-sm  rounded-3" data-bs-toggle="modal" data-bs-target="#tambahBukuModal">
             <i class="fas fa-plus"></i> Tambah
           </button>
         </div>

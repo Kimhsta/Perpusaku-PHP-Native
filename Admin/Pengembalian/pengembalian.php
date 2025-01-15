@@ -59,7 +59,7 @@ $result->execute();
             <i class="bx bx-filter-alt me-2"></i> Filter
           </button>
           <!-- Menu Dropdown -->
-          <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+          <ul class="dropdown-menu rounded-3" aria-labelledby="filterDropdown">
             <li>
               <a class="dropdown-item d-flex align-items-center <?= $filter === 'semua' ? 'active' : ''; ?>" href="?filter=semua">
                 <i class="bx bx-check-circle me-2"></i> Semua
@@ -79,16 +79,16 @@ $result->execute();
         </div>
 
         <!-- Input Pencarian -->
-        <div class="input-group" style="max-width: 250px;">
+        <div class="input-group rounded-3" style="max-width: 250px;">
           <span class="input-group-text bg-primary text-white"><i class="fas fa-search"></i></span>
           <input type="text" class="form-control" id="search" placeholder="Cari Pengembalian..." onkeyup="searchTable()">
         </div>
         <!-- Tombol Print -->
-        <button class="btn btn-info shadow-sm text-white" onclick="printAll()">
+        <button class="btn btn-info shadow-sm rounded-3 text-white" onclick="printAll()">
           <i class="fas fa-print"></i> Cetak Semua
         </button>
         <!-- Tombol Tambah Pengembalian -->
-        <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahPengembalianModal">
+        <button class="btn btn-primary rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahPengembalianModal">
           <i class="fas fa-plus"></i> Tambah
         </button>
       </div>

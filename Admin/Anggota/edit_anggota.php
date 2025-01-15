@@ -7,13 +7,13 @@ $nim = $_GET['nim'] ?? '';
 $stmt = $conn->prepare("SELECT * FROM Anggota WHERE nim = ?");
 $stmt->execute([$nim]);
 $anggota = $stmt->fetch(PDO::FETCH_ASSOC) ?? [
-    'nama' => '',
-    'jenis_kelamin' => '',
-    'kelas' => '',
-    'tgl_lahir' => '',
-    'jurusan' => '',
-    'status_mhs' => '',
-    'no_telp' => ''
+  'nama' => '',
+  'jenis_kelamin' => '',
+  'kelas' => '',
+  'tgl_lahir' => '',
+  'jurusan' => '',
+  'status_mhs' => '',
+  'no_telp' => ''
 ];
 ?>
 
@@ -54,8 +54,8 @@ $anggota = $stmt->fetch(PDO::FETCH_ASSOC) ?? [
       <input type="text" class="form-control" id="no_telp" name="no_telp" value="<?= htmlspecialchars($anggota['no_telp']); ?>" required>
     </div>
   </div>
-  <div class="d-flex justify-content-end mt-4">
-    <button type="submit" class="text-white btn btn-warning">Simpan Perubahan</button>
+  <div class="d-flex justify-content-end mt-4 rounded-3">
+    <button type="submit" class="btn btn-warning">Simpan Perubahan</button>
   </div>
   <input type="hidden" name="nim" value="<?= htmlspecialchars($nim); ?>">
 </form>

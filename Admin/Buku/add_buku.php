@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="invalid-feedback">Harap masukkan deskripsi buku.</div>
             </div>
         </div>
-        <div class="d-flex justify-content-end mt-4">
+        <div class="d-flex justify-content-end mt-4 rounded-3">
             <button type="reset" class="btn btn-secondary me-2">Reset</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
         </div>

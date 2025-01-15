@@ -49,7 +49,7 @@ $result->execute();
       <h2 class="fw-bold text-dark mb-0">Data Peminjaman</h2>
       <div class="d-flex align-items-between gap-3">
         <!-- Filter Status -->
-        <div class="dropdown">
+        <div class="dropdown rounded-3">
           <!-- Tombol Filter -->
           <button class="btn btn-light border d-flex align-items-center"
             type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -75,11 +75,11 @@ $result->execute();
           </ul>
         </div>
 
-        <div class="input-group" style="max-width: 250px;">
+        <div class="input-group rounded-3" style="max-width: 250px;">
           <span class="input-group-text bg-primary text-white"><i class="fas fa-search"></i></span>
           <input type="text" class="form-control" id="search" placeholder="Cari Peminjaman..." onkeyup="searchTable()">
         </div>
-        <button class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#tambahPeminjamanModal">
+        <button class="btn btn-primary shadow-sm rounded-3" data-bs-toggle="modal" data-bs-target="#tambahPeminjamanModal">
           <i class="fas fa-plus"></i> Tambah
         </button>
       </div>
@@ -125,7 +125,7 @@ $result->execute();
               </td>
               <td class="text-center">
                 <button class="btn btn-info btn-sm rounded-2 text-white mb-2" onclick="printData('<?= $row['kode_pinjam']; ?>')">
-                  <i class="fas fa-print"></i> Edit
+                  <i class="fas fa-print"></i> Print
                 </button>
                 <?php if ($row['status'] === 'Dipinjam'): ?>
                   <button class="btn btn-success btn-sm rounded-2 text-white"

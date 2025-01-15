@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea class="form-control" id="deskripsi_buku" name="deskripsi_buku" rows="5" required><?= $buku['deskripsi_buku'] ?></textarea>
         </div>
     </div>
-    <div class="d-flex justify-content-end mt-4">
+    <div class="d-flex justify-content-end mt-4 rounded-3">
         <button type="submit" class="btn btn-warning">Simpan Perubahan</button>
     </div>
 </form>

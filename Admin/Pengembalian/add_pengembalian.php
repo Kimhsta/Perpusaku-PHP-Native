@@ -121,7 +121,10 @@ $peminjaman = $conn->query("
                 <option value="hilang">Hilang</option>
             </select>
         </div>
+        <div class="d-flex justify-content-end mt-4 rounded-3">
+            <button type="reset" class="btn btn-secondary me-2">Reset</button>
+            <button type="submit" class="btn btn-primary">Proses</button>
+        </div>
 
-        <button type="submit" class="btn btn-primary">Proses Pengembalian</button>
     </form>
 </div>
