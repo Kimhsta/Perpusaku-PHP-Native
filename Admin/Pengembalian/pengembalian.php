@@ -100,7 +100,7 @@ $result->execute();
             <th class="text-center">Kode</th>
             <th>Nama Anggota</th>
             <th>Judul Buku</th>
-            <th>Tanggal Kembali</th>
+            <th>Tgl.Kembali</th>
             <th>Kondisi</th>
             <th>Denda</th>
             <th>Status</th>
@@ -189,57 +189,110 @@ $result->execute();
       </nav>
     </div>
   </div>
+  <!-- Modal Tambah Pengembalian -->
+  <div class="modal fade" id="tambahPengembalianModal" tabindex="-1" aria-labelledby="tambahPengembalianLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="tambahPengembalianLabel">Tambah Data Pengembalian</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="tambahModalContent">
+          <!-- Form akan dimuat di sini menggunakan AJAX -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Edit Pengembalian -->
+  <div class="modal fade" id="editPengembalianModal" tabindex="-1" aria-labelledby="editPengembalianLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-warning text-white">
+          <h5 class="modal-title" id="editPengembalianLabel">Edit Data Pengembalian</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="editModalContent">
+          <!-- Form akan dimuat di sini menggunakan AJAX -->
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- Modal Tambah Pengembalian -->
-<div class="modal fade" id="tambahPengembalianModal" tabindex="-1" aria-labelledby="tambahPengembalianLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="tambahPengembalianLabel">Tambah Data Pengembalian</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="tambahModalContent">
-        <!-- Form akan dimuat di sini menggunakan AJAX -->
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal Edit Pengembalian -->
-<div class="modal fade" id="editPengembalianModal" tabindex="-1" aria-labelledby="editPengembalianLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header bg-warning text-white">
-        <h5 class="modal-title" id="editPengembalianLabel">Edit Data Pengembalian</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="editModalContent">
-        <!-- Form akan dimuat di sini menggunakan AJAX -->
-      </div>
-    </div>
-  </div>
-</div>
 
 <script>
-  // AJAX untuk tambah pengembalian
+  // AJAX untuk memuat form tambah pengembalian
   document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('tambahPengembalianModal');
     const modalContent = document.getElementById('tambahModalContent');
-    modal.addEventListener('show.bs.modal', function() {
-      modalContent.innerHTML = '<p class="text-center text-muted">Loading...</p>';
-      fetch('add_pengembalian.php')
-        .then(response => response.text())
-        .then(data => {
-          modalContent.innerHTML = data;
-        })
-        .catch(error => {
-          modalContent.innerHTML = '<p class="text-danger">Gagal memuat form</p>';
-        });
-    });
+
+    if (modal) {
+      modal.addEventListener('show.bs.modal', function() {
+        modalContent.innerHTML = '<p class="text-center text-muted">Loading...</p>';
+        fetch('add_pengembalian.php')
+          .then(response => response.text())
+          .then(data => {
+            modalContent.innerHTML = data;
+            setupAutocomplete(); // Panggil setupAutocomplete setelah konten dimuat
+          })
+          .catch(error => {
+            modalContent.innerHTML = '<p class="text-danger">Gagal memuat form</p>';
+            console.error('Error loading modal content:', error);
+          });
+      });
+    }
   });
 
+  // Fungsi untuk menangani autocomplete
+  function setupAutocomplete() {
+    const inputKodePinjam = document.getElementById('kode_pinjam');
+    const searchResults = document.getElementById('search_results');
+
+    inputKodePinjam.addEventListener('input', function() {
+      const query = inputKodePinjam.value;
+
+      if (query.length > 0) {
+        fetch(`search_kode_pinjam.php?kode_pinjam=${query}`)
+          .then(response => response.json())
+          .then(data => {
+            let html = '';
+            if (data.length > 0) {
+              data.forEach(item => {
+                html += `<div class="autocomplete-item" onclick="selectKodePinjam('${item.kode_pinjam}', '${item.nama_anggota}')">
+                                    <strong> ${item.kode_pinjam}</strong> - ${item.nama_anggota} <br>
+                                </div>`;
+              });
+            } else {
+              html = '<div class="autocomplete-item">Tidak ada hasil yang ditemukan</div>';
+            }
+            searchResults.innerHTML = html;
+            searchResults.style.display = 'block';
+          });
+      } else {
+        searchResults.innerHTML = '';
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // Fungsi untuk memilih item dari hasil autocomplete
+    window.selectKodePinjam = function(kodePinjam, namaAnggota) {
+      inputKodePinjam.value = kodePinjam;
+      searchResults.innerHTML = '';
+      searchResults.style.display = 'none';
+    };
+  }
+
+  // Panggil fungsi setupAutocomplete saat halaman dimuat
+  document.addEventListener('DOMContentLoaded', setupAutocomplete);
+  console.log('Autocomplete script berjalan!');
+  const inputKodePinjam = document.getElementById('kode_pinjam');
+  if (inputKodePinjam) {
+    console.log('Elemen ditemukan:', inputKodePinjam);
+  } else {
+    console.log('Elemen #kode_pinjam tidak ditemukan!');
+  }
 
   // AJAX untuk memuat form edit
   function loadEditForm(kode_kembali) {

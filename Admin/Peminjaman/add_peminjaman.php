@@ -82,12 +82,8 @@ $petugas = $conn->query("SELECT id_petugas, nama_petugas FROM petugas")->fetchAl
         <!-- Pilih Anggota -->
         <div class="mb-3">
           <label for="nim" class="form-label">Anggota</label>
-          <select name="nim" id="nim" class="form-select" required>
-            <option value="">Pilih Anggota</option>
-            <?php foreach ($anggota as $a): ?>
-              <option value="<?= $a['nim']; ?>"><?= $a['nim']; ?> - <?= $a['nama']; ?></option>
-            <?php endforeach; ?>
-          </select>
+          <input autocomplete="off" type="text" id="nim" name="nim" class="form-control" placeholder="Cari Anggota..." required>
+          <div id="search_results" class="mt-2"></div> <!-- Menampilkan hasil pencarian -->
         </div>
       </div>
       <div class="col-md-6">
@@ -126,12 +122,8 @@ $petugas = $conn->query("SELECT id_petugas, nama_petugas FROM petugas")->fetchAl
         <!-- Pilih Buku -->
         <div class="mb-3">
           <label for="kode_buku" class="form-label">Buku</label>
-          <select name="kode_buku" id="kode_buku" class="form-select" required>
-            <option value="">Pilih Buku</option>
-            <?php foreach ($buku as $b): ?>
-              <option value="<?= $b['kode_buku']; ?>"><?= $b['kode_buku']; ?> - <?= $b['judul_buku']; ?></option>
-            <?php endforeach; ?>
-          </select>
+          <input autocomplete="off" type="text" id="kode_buku" name="kode_buku" class="form-control" placeholder="Cari Buku..." required>
+          <div id="search_results_buku" class="mt-2"></div> <!-- Menampilkan hasil pencarian buku -->
         </div>
       </div>
       <div class="col-md-6">

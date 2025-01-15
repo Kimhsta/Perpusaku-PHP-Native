@@ -92,8 +92,8 @@ $result->execute();
             <th>Judul Buku</th>
             <th>Nama Petugas</th>
             <th>Tanggal Pinjam</th>
-            <th>Estimasi Kembali</th>
-            <th>Kondisi Buku</th>
+            <th>Estimasi</th>
+            <th>Kondisi</th>
             <th>Status</th>
             <th class="text-center">Aksi</th>
           </tr>
@@ -198,12 +198,97 @@ $result->execute();
         .then(response => response.text())
         .then(data => {
           modalContent.innerHTML = data;
+          setupAutocomplete(); // Panggil fungsi setupAutocomplete untuk anggota
+          setupAutocompleteBuku(); // Panggil fungsi setupAutocompleteBuku untuk buku
         })
         .catch(error => {
           modalContent.innerHTML = '<p class="text-danger">Gagal memuat form</p>';
         });
     });
   });
+
+  function setupAutocomplete() {
+    const inputNim = document.getElementById('nim');
+    const searchResults = document.getElementById('search_results');
+
+    inputNim.addEventListener('input', function() {
+      const query = inputNim.value;
+
+      if (query.length > 0) {
+        fetch(`search_anggota.php?query=${query}`)
+          .then(response => response.json())
+          .then(data => {
+            let html = '';
+            if (data.length > 0) {
+              data.forEach(item => {
+                html += `<div class="autocomplete-item" onclick="selectAnggota('${item.nim}', '${item.nama}')">
+                          <strong>${item.nim}</strong> - ${item.nama}
+                        </div>`;
+              });
+            } else {
+              html = '<div class="autocomplete-item">Tidak ada hasil yang ditemukan</div>';
+            }
+            searchResults.innerHTML = html;
+            searchResults.style.display = 'block';
+          });
+      } else {
+        searchResults.innerHTML = '';
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // Fungsi untuk memilih item dari hasil autocomplete
+    window.selectAnggota = function(nim, nama) {
+      inputNim.value = nim;
+      searchResults.innerHTML = '';
+      searchResults.style.display = 'none';
+    };
+  }
+
+  // Panggil fungsi setupAutocomplete saat halaman dimuat
+  document.addEventListener('DOMContentLoaded', setupAutocomplete);
+
+
+  function setupAutocompleteBuku() {
+    const inputKodeBuku = document.getElementById('kode_buku');
+    const searchResultsBuku = document.getElementById('search_results_buku');
+
+    inputKodeBuku.addEventListener('input', function() {
+      const query = inputKodeBuku.value;
+
+      if (query.length > 0) {
+        fetch(`search_buku.php?query=${query}`)
+          .then(response => response.json())
+          .then(data => {
+            let html = '';
+            if (data.length > 0) {
+              data.forEach(item => {
+                html += `<div class="autocomplete-item" onclick="selectBuku('${item.kode_buku}', '${item.judul_buku}')">
+                          <strong>${item.kode_buku}</strong> - ${item.judul_buku}
+                        </div>`;
+              });
+            } else {
+              html = '<div class="autocomplete-item">Tidak ada hasil yang ditemukan</div>';
+            }
+            searchResultsBuku.innerHTML = html;
+            searchResultsBuku.style.display = 'block';
+          });
+      } else {
+        searchResultsBuku.innerHTML = '';
+        searchResultsBuku.style.display = 'none';
+      }
+    });
+
+    // Fungsi untuk memilih item dari hasil autocomplete
+    window.selectBuku = function(kodeBuku, judulBuku) {
+      inputKodeBuku.value = kodeBuku;
+      searchResultsBuku.innerHTML = '';
+      searchResultsBuku.style.display = 'none';
+    };
+  }
+
+  // Panggil fungsi setupAutocompleteBuku saat halaman dimuat
+  document.addEventListener('DOMContentLoaded', setupAutocompleteBuku);
 
   // AJAX untuk edit peminjaman
   function loadEditForm(kode_pinjam) {

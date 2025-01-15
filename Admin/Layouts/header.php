@@ -18,12 +18,35 @@
   <link rel="stylesheet" href="../../Assets/css/dashboard.css">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <style>
-    .calendar {
+    .home-section {
+      position: relative;
+      min-height: 100vh;
+      max-width: 90%;
+      left: 120px;
+      width: calc(100% - 0px);
+      transition: all 0.5s ease;
+      background: #ffffff;
+    }
+
+    .sidebar.open~.home-section {
+      left: 260px;
+      width: calc(100% - 280px);
+    }
+
+    .home-section .text {
+      display: inline-block;
+      color: #fff;
+      font-size: 25px;
+      font-weight: 500;
+      margin: 18px;
+    }
+
+    /* .calendar {
       background: #fff;
       border-radius: 25px;
-      width: 800px;
+      width: 700px;
       padding: 20px;
-    }
+    } */
 
     .calendar-header h2 {
       font-size: 1.5rem;
@@ -51,7 +74,7 @@
     }
 
     .day {
-      padding: 11px 0;
+      padding: 10px 0;
       background: #e9ecef;
       border-radius: 25px;
       transition: background 0.3s ease, transform 0.3s ease;
@@ -85,7 +108,15 @@
 
     #search_results {
       border: 1px solid #ddd;
-      max-height: 200px;
+      max-height: 100px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    #search_results_buku {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      max-height: 100px;
       overflow-y: auto;
       display: none;
     }
