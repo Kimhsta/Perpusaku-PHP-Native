@@ -33,8 +33,10 @@ $query = "
     INNER JOIN buku ON peminjaman.kode_buku = buku.kode_buku
     INNER JOIN petugas ON peminjaman.id_petugas = petugas.id_petugas
     $whereClause
+    ORDER BY peminjaman.tgl_pinjam DESC
     LIMIT :limit OFFSET :offset
 ";
+
 $result = $conn->prepare($query);
 $result->bindValue(':limit', $limit, PDO::PARAM_INT);
 $result->bindValue(':offset', $offset, PDO::PARAM_INT);

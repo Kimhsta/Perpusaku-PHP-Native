@@ -21,8 +21,8 @@
     .home-section {
       position: relative;
       min-height: 100vh;
-      max-width: 90%;
-      left: 120px;
+      max-width: 91%;
+      left: 110px;
       width: calc(100% - 0px);
       transition: all 0.5s ease;
       background: #ffffff;
