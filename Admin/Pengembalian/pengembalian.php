@@ -7,11 +7,6 @@ $limit = 10; // Jumlah data per halaman
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Halaman saat ini
 $offset = ($page - 1) * $limit;
 
-// Hitung total data
-$totalQuery = $conn->query("SELECT COUNT(*) AS total FROM pengembalian");
-$totalResult = $totalQuery->fetch(PDO::FETCH_ASSOC);
-$totalRows = $totalResult['total'];
-$totalPages = ceil($totalRows / $limit);
 
 $filter = isset($_GET['filter']) ? $_GET['filter'] : 'semua'; // Menangani filter
 
@@ -21,6 +16,12 @@ if ($filter === 'belum_lunas') {
 } elseif ($filter === 'lunas') {
   $whereClause = "WHERE pengembalian.status = 'Lunas'";
 }
+
+// Hitung total data
+$totalQuery = $conn->query("SELECT COUNT(*) AS total FROM pengembalian $whereClause");
+$totalResult = $totalQuery->fetch(PDO::FETCH_ASSOC);
+$totalRows = $totalResult['total'];
+$totalPages = ceil($totalRows / $limit);
 
 // Update query untuk menambahkan kondisi WHERE berdasarkan filter
 $result = $conn->prepare("
@@ -110,11 +111,11 @@ $result->execute();
         </thead>
         <tbody>
           <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
-            <tr>
+            <tr style="font-size: 15px;">
               <td class="text-center"><?= $row['kode_kembali']; ?></td>
-              <td><?= $row['nama_anggota']; ?></td>
+              <td style="font-weight: 600;"><?= $row['nama_anggota']; ?></td>
               <td><?= $row['judul_buku']; ?></td>
-              <td><?= date('d-m-Y', strtotime(datetime: $row['tgl_kembali'])); ?></td>
+              <td><?= date('d-m-Y', strtotime($row['tgl_kembali'])); ?></td>
               <td>
                 <?php if ($row['kondisi_buku'] == 'Bagus') { ?>
                   <span class="badge rounded-4" style="background-color: rgba(72, 207, 255, 0.2); color: #48cfff; padding: 10px 20px; font-weight: bold; display: inline-block; text-align: center;">Bagus</span>
@@ -138,7 +139,7 @@ $result->execute();
                 <?php if ($row['pembayaran'] == 'Tidak Ada') { ?>
                   <span class="badge rounded-4" style="background-color: rgba(158, 158, 158, 0.2); color: #9e9e9e; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Tidak Ada</span>
                 <?php } elseif ($row['pembayaran'] == 'Kes') { ?>
-                  <span class="badge rounded-4" style="background-color: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Kes</span>
+                  <span class="badge rounded-4" style="background-color: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Cash</span>
                 <?php } else { ?>
                   <span class="badge rounded-4" style="background-color: rgba(33, 150, 243, 0.2); color: #2196f3; padding: 10px 10px; font-weight: bold; display: inline-block; text-align: center;">Transfer</span>
                 <?php } ?>

@@ -111,9 +111,9 @@ $result->execute();
         </thead>
         <tbody>
           <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
-            <tr>
+            <tr style="font-size: 15px;">
               <td class="text-center"><?= $row['nim']; ?></td>
-              <td><?= $row['nama']; ?></td>
+              <td style="font-weight: 600;"><?= $row['nama']; ?></td>
               <td><?= $row['no_telp']; ?></td>
               <td><?= $row['jenis_kelamin']; ?></td>
               <td><?= $row['jurusan']; ?></td>

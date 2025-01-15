@@ -99,9 +99,9 @@ $result->execute();
         </thead>
         <tbody>
           <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
-            <tr>
+            <tr style="font-size: 15px;">
               <td class="text-center"><?= $row['kode_buku']; ?></td>
-              <td><?= $row['judul_buku']; ?></td>
+              <td style="font-weight: 600;"><?= $row['judul_buku']; ?></td>
               <td><?= $row['pengarang']; ?></td>
               <!-- <td><?= $row['penerbit']; ?></td> -->
               <td><?= $row['tanggal_terbit']; ?></td>

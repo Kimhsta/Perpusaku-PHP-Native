@@ -91,7 +91,7 @@ $result->execute();
             <th>Nama Anggota</th>
             <th>Judul Buku</th>
             <th>Nama Petugas</th>
-            <th>Tanggal Pinjam</th>
+            <th>Tanggal</th>
             <th>Estimasi</th>
             <th>Kondisi</th>
             <th>Status</th>
@@ -100,9 +100,9 @@ $result->execute();
         </thead>
         <tbody>
           <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
-            <tr>
+            <tr style="font-size: 15px;">
               <td class="text-center"><?= $row['kode_pinjam']; ?></td>
-              <td><?= $row['nama_anggota']; ?></td>
+              <td style="font-weight: 600;"><?= $row['nama_anggota']; ?></td>
               <td><?= $row['judul_buku']; ?></td>
               <td><?= $row['nama_petugas']; ?></td>
               <td><?= date('d-m-Y', strtotime($row['tgl_pinjam'])); ?></td>
@@ -122,8 +122,8 @@ $result->execute();
                 <?php } ?>
               </td>
               <td class="text-center">
-                <button class="btn btn-info btn-sm rounded-2 text-white" onclick="printData('<?= $row['kode_pinjam']; ?>')">
-                  <i class="fas fa-print"></i> Print
+                <button class="btn btn-info btn-sm rounded-2 text-white mb-2" onclick="printData('<?= $row['kode_pinjam']; ?>')">
+                  <i class="fas fa-print"></i> Edit
                 </button>
                 <?php if ($row['status'] === 'Dipinjam'): ?>
                   <button class="btn btn-success btn-sm rounded-2 text-white"
