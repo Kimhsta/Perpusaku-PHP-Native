@@ -108,7 +108,7 @@ if (isset($_GET['kode_pinjam'])) {
             <div class="struk">
                 <div class="header">
                     <!-- Logo Perpustakaan -->
-                    <img src="../../Assets/img/logorev.svg" alt="Logo Perpustakaan">
+                    <img src="../../Assets/img/logo2.svg" alt="Logo Perpustakaan">
                     <h1>Perpustakaan Pusaku</h1>
                     <p>Jl. Tasyuka No. 12, Kota Surakarta</p>
                 </div>
