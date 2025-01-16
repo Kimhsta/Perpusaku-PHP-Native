@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="col-md-6">
                 <label for="no_telp" class="form-label">No. Telpon</label>
-                <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="diawalai '+62' dan wa aktif" required>
+                <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="diawala '+62' dan wa aktif" required>
             </div>
 
             <div class="col-md-6">

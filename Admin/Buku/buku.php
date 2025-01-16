@@ -43,29 +43,29 @@ $result->execute();
             <i class="bx bx-filter-alt me-2"></i> Filter
           </button>
 
-          <!-- Menu Dropdown -->
           <ul class="dropdown-menu" aria-labelledby="filterDropdown">
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="?filter=all">
+              <a class="dropdown-item d-flex align-items-center <?= $filterStatus === 'all' ? 'active' : ''; ?>" href="?filter=all">
                 <i class="bx bx-check-circle me-2"></i> Semua
               </a>
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="?filter=Tersedia">
+              <a class="dropdown-item d-flex align-items-center <?= $filterStatus === 'Tersedia' ? 'active' : ''; ?>" href="?filter=Tersedia">
                 <i class="bx bx-check-circle me-2"></i> Tersedia
               </a>
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="?filter=Dipinjam">
+              <a class="dropdown-item d-flex align-items-center <?= $filterStatus === 'Dipinjam' ? 'active' : ''; ?>" href="?filter=Dipinjam">
                 <i class="bx bx-book-open me-2"></i> Dipinjam
               </a>
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="?filter=Kosong">
+              <a class="dropdown-item d-flex align-items-center <?= $filterStatus === 'Kosong' ? 'active' : ''; ?>" href="?filter=Kosong">
                 <i class="bx bx-x-circle me-2"></i> Kosong
               </a>
             </li>
           </ul>
+
         </div>
 
         <!-- Input Pencarian -->
