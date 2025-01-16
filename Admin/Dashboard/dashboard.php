@@ -168,7 +168,7 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                         </div>
                     </div>
                     <div class="anime-image ms-3" style="width: 50%; padding: px;">
-                        <img id="random-image" src="" alt="" class="img-fluid rounded-3 border border-info border-4 border-opacity-50" />
+                        <img id="random-image" src="https://via.placeholder.com/150" alt="Mirrored Image" class="img-fluid rounded-3" style="transform: scaleX(-1);" />
                     </div>
                 </div>
             </div>
@@ -195,7 +195,9 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                                         <p class="text-muted mb-0 small">Nama: <?= htmlspecialchars($row['nama']); ?></p>
                                         <p class="text-muted small">Estimasi: <?= htmlspecialchars($row['estimasi_pinjam']); ?></p>
                                     </div>
-                                    <div class="badge bg-primary text-white p-2">Pinjam</div>
+                                    <div>
+                                        <a href="../Peminjaman/peminjaman.php" class="btn btn-primary text-white">Pinjam</a>
+                                    </div>
                                 </div>
                             <?php endwhile; ?>
                         <?php else: ?>
@@ -226,7 +228,9 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                                             <p class="text-muted mb-0 small">Nama: <?= htmlspecialchars($row['nama']); ?></p>
                                             <p class="text-muted small">Denda: Rp<?= number_format($row['denda'], 2, ',', '.'); ?></p>
                                         </div>
-                                        <div class="badge bg-warning text-white p-2">Denda</div>
+                                        <div>
+                                            <a href="../Pengembalian/pengembalian.php" class="btn btn-warning text-white">Denda</a>
+                                        </div>
                                     </div>
                                 <?php endwhile; ?>
                             <?php else: ?>
