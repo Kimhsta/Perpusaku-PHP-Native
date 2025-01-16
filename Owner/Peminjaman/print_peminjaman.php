@@ -18,44 +18,141 @@ if (isset($_GET['kode_pinjam'])) {
     $data = $query->fetch(PDO::FETCH_ASSOC);
 
     if ($data) {
-        ?>
+        // Format tanggal tanpa waktu
+        $tgl_pinjam = date('Y-m-d', strtotime($data['tgl_pinjam']));
+        $estimasi_pinjam = date('Y-m-d', strtotime($data['estimasi_pinjam']));
+?>
         <!DOCTYPE html>
         <html lang="en">
+
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Print Peminjaman</title>
+            <title>Struk Peminjaman Buku</title>
             <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; }
-                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-                .header { text-align: center; margin-bottom: 20px; }
-                .header h1 { margin: 0; }
-                .details { border: 1px solid #ddd; padding: 10px; }
-                .details table { width: 100%; }
-                .details table th, .details table td { text-align: left; padding: 8px; }
-                .details table th { background-color: #f4f4f4; }
+                body {
+                    font-family: 'Arial', sans-serif;
+                    background-color: #f9f9f9;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .struk {
+                    width: 300px;
+                    margin: 20px auto;
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    padding: 20px;
+                    border-radius: 8px;
+                }
+
+                .header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+
+                .header img {
+                    max-width: 100px;
+                    margin-bottom: 10px;
+                }
+
+                .header h1 {
+                    font-size: 18px;
+                    margin: 0;
+                    color: #333;
+                }
+
+                .header p {
+                    font-size: 12px;
+                    color: #777;
+                    margin: 5px 0;
+                }
+
+                .details {
+                    font-size: 14px;
+                    color: #333;
+                }
+
+                .details table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+
+                .details table th,
+                .details table td {
+                    padding: 8px 0;
+                    border-bottom: 1px solid #ddd;
+                }
+
+                .details table th {
+                    text-align: left;
+                    font-weight: bold;
+                    width: 40%;
+                }
+
+                .details table td {
+                    text-align: right;
+                }
+
+                .footer {
+                    text-align: center;
+                    margin-top: 20px;
+                    font-size: 12px;
+                    color: #777;
+                }
             </style>
         </head>
+
         <body onload="window.print()">
-            <div class="container">
+            <div class="struk">
                 <div class="header">
-                    <h1>Detail Peminjaman</h1>
+                    <!-- Logo Perpustakaan -->
+                    <img src="../../Assets/img/logo2.svg" alt="Logo Perpustakaan">
+                    <h1>Perpustakaan Pusaku</h1>
+                    <p>Jl. Tasyuka No. 12, Kota Surakarta</p>
                 </div>
                 <div class="details">
                     <table>
-                        <tr><th>Kode Pinjam</th><td><?= $data['kode_pinjam']; ?></td></tr>
-                        <tr><th>Nama Anggota</th><td><?= $data['nama_anggota']; ?></td></tr>
-                        <tr><th>Judul Buku</th><td><?= $data['judul_buku']; ?></td></tr>
-                        <tr><th>Nama Petugas</th><td><?= $data['nama_petugas']; ?></td></tr>
-                        <tr><th>Tanggal Pinjam</th><td><?= $data['tgl_pinjam']; ?></td></tr>
-                        <tr><th>Estimasi Kembali</th><td><?= $data['estimasi_pinjam']; ?></td></tr>
-                        <tr><th>Kondisi Buku</th><td><?= $data['kondisi_buku_pinjam']; ?></td></tr>
+                        <tr>
+                            <th>Kode Pinjam</th>
+                            <td><?= $data['kode_pinjam']; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Nama Anggota</th>
+                            <td><?= $data['nama_anggota']; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Judul Buku</th>
+                            <td><?= $data['judul_buku']; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Nama Petugas</th>
+                            <td><?= $data['nama_petugas']; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Pinjam</th>
+                            <td><?= $tgl_pinjam; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Estimasi Kembali</th>
+                            <td><?= $estimasi_pinjam; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Kondisi Buku</th>
+                            <td><?= $data['kondisi_buku_pinjam']; ?></td>
+                        </tr>
                     </table>
+                </div>
+                <div class="footer">
+                    <p>Terima kasih telah meminjam buku di Pusaku</p>
+                    <p>Harap kembalikan buku tepat waktu.</p>
                 </div>
             </div>
         </body>
+
         </html>
-        <?php
+<?php
     } else {
         echo "Data tidak ditemukan.";
     }

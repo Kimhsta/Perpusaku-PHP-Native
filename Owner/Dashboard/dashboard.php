@@ -151,27 +151,29 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
         </div>
 
         <!-- Flex Container for Calendar and Lists -->
-        <div class="d-flex justify-content-between">
-            <div class="calendar border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
-                <!-- Calendar Section -->
-                <div class="calendar-content">
-                    <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
-                        <button id="prev" class="btn btn-primary">❮</button>
-                        <h2 id="month-year" class="mb-0">January 2025</h2>
-                        <button id="next" class="btn btn-primary">❯</button>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="calendar border border-secondary border-opacity-75 p-3 rounded-3 d-flex">
+                    <!-- Calendar Section -->
+                    <div class="calendar-content flex-grow-1">
+                        <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+                            <button id="prev" class="btn btn-primary">❮</button>
+                            <h2 id="month-year" class="mb-0">January 2025</h2>
+                            <button id="next" class="btn btn-primary">❯</button>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid" class="d-grid grid-template-columns-7 gap-2 text-center">
+                            <!-- Grid of days will go here -->
+                        </div>
                     </div>
-                    <div class="calendar-grid" id="calendar-grid" class="d-grid grid-template-columns-7 gap-2 text-center">
-                        <!-- Grid of days will go here -->
+                    <div class="anime-image ms-3" style="width: 50%; padding: px;">
+                        <img id="random-image" src="https://via.placeholder.com/150" alt="Mirrored Image" class="img-fluid rounded-3" style="transform: scaleX(-1);" />
                     </div>
-                </div>
-                <div class="anime-image ms-3" style="width: 50%; padding: 0px;">
-                    <img id="random-image" src="" alt="" class="img-fluid rounded-3 shadow-sm" />
                 </div>
             </div>
             <!-- Daftar Pengembalian yang Perlu Dikembalikan -->
             <div class="col-md-6">
                 <!-- Pengembalian yang Perlu Dikembalikan -->
-                <div class="card p-3 border-0 rounded-4 mb-4" style="background-color: #f0f9ff;">
+                <div class="d-flex card shadow-sm p-3 border-0 rounded-4" style="background-color: #f0f9ff;">
                     <div class="d-flex align-items-center gap-3">
                         <div class="icon-box rounded-circle text-center" style="background-color: #d1f2ff; width: 50px; height: 50px;">
                             <i class="bx bx-time-five text-primary" style="font-size: 24px; line-height: 50px;"></i>
@@ -191,7 +193,9 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                                         <p class="text-muted mb-0 small">Nama: <?= htmlspecialchars($row['nama']); ?></p>
                                         <p class="text-muted small">Estimasi: <?= htmlspecialchars($row['estimasi_pinjam']); ?></p>
                                     </div>
-                                    <div class="badge bg-primary text-white p-2">Pinjam</div>
+                                    <div>
+                                        <a href="../Peminjaman/peminjaman.php" class="btn btn-primary text-white">Pinjam</a>
+                                    </div>
                                 </div>
                             <?php endwhile; ?>
                         <?php else: ?>
@@ -200,10 +204,9 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                     </div>
                 </div>
 
-
                 <!-- Pengembalian Belum Lunas -->
-                <div class="">
-                    <div class="card p-3 border-0 rounded-4 mb-4 mt-4" style="background-color: #fff8e6;">
+                <div class="mt-4">
+                    <div class="card shadow-sm p-3 border-0 rounded-4" style="background-color: #fff8e6;">
                         <div class="d-flex align-items-center gap-3">
                             <div class="icon-box rounded-circle text-center" style="background-color: #ffe4b5; width: 50px; height: 50px;">
                                 <i class="bx bx-credit-card text-warning" style="font-size: 24px; line-height: 50px;"></i>
@@ -223,7 +226,9 @@ $stmtBelumLunas = $conn->query($queryBelumLunas);
                                             <p class="text-muted mb-0 small">Nama: <?= htmlspecialchars($row['nama']); ?></p>
                                             <p class="text-muted small">Denda: Rp<?= number_format($row['denda'], 2, ',', '.'); ?></p>
                                         </div>
-                                        <div class="badge bg-warning text-white p-2">Denda</div>
+                                        <div>
+                                            <a href="../Pengembalian/pengembalian.php" class="btn btn-warning text-white">Denda</a>
+                                        </div>
                                     </div>
                                 <?php endwhile; ?>
                             <?php else: ?>
