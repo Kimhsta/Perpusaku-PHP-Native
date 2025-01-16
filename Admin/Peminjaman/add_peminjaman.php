@@ -141,7 +141,7 @@ $petugas = $conn->query("SELECT id_petugas, nama_petugas FROM petugas")->fetchAl
       <span class="text-danger">* Maksimal peminjaman adalah 7 hari dari tanggal pinjam.</span>
     </div>
     <div class="d-flex justify-content-end mt-4 rounded-3">
-      <button type="reset" class="btn btn-secondary me-2">Reset</button>
+      <button type="reset" class="btn btn-danger me-2">Reset</button>
       <button type="submit" class="btn btn-primary">Tambah</button>
     </div>
   </form>
