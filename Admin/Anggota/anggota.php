@@ -11,36 +11,27 @@ if ($memberFilter === 'aktif') {
   $whereClause = "WHERE anggota.status_mhs = 'Tidak Aktif'";
 }
 
-$result = $conn->prepare("
-    SELECT pengembalian.kode_kembali, pengembalian.tgl_kembali, pengembalian.kode_pinjam, 
-           pengembalian.kondisi_buku, pengembalian.denda, pengembalian.status, 
-           pengembalian.pembayaran, anggota.nama AS nama_anggota, 
-           anggota.no_telp, anggota.status_mhs, buku.judul_buku 
-    FROM pengembalian
-    JOIN peminjaman ON pengembalian.kode_pinjam = peminjaman.kode_pinjam
-    JOIN anggota ON peminjaman.nim = anggota.nim
-    JOIN buku ON peminjaman.kode_buku = buku.kode_buku
-    $whereClause
-    LIMIT :limit OFFSET :offset
-");
-
 // Pagination logic
 $limit = 10; // Jumlah data per halaman
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Halaman saat ini
 $offset = ($page - 1) * $limit;
 
 // Hitung total data
-$totalQuery = $conn->query("SELECT COUNT(*) AS total FROM anggota");
+$totalQuery = $conn->prepare("SELECT COUNT(*) AS total FROM anggota $whereClause");
+$totalQuery->execute();
 $totalResult = $totalQuery->fetch(PDO::FETCH_ASSOC);
 $totalRows = $totalResult['total'];
 $totalPages = ceil($totalRows / $limit);
 
-// Ambil data sesuai halaman dan filter status anggota
+
+// Ambil data sesuai halaman dan filter status anggota dan urutan abjad
 $result = $conn->prepare("
     SELECT * FROM anggota
     $whereClause
+    ORDER BY nama ASC
     LIMIT :limit OFFSET :offset
 ");
+
 $result->bindValue(':limit', $limit, PDO::PARAM_INT);
 $result->bindValue(':offset', $offset, PDO::PARAM_INT);
 $result->execute();
