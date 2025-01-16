@@ -53,6 +53,7 @@ $result->execute();
             <th>Username</th>
             <th>No. Telp</th>
             <th>Jenis Kelamin</th>
+            <th class="text-center">Status</th>
             <th class="text-center">Aksi</th>
           </tr>
         </thead>
@@ -68,6 +69,13 @@ $result->execute();
               <td><?= $row['username']; ?></td>
               <td><?= $row['no_telp']; ?></td>
               <td><?= $row['jenis_kelamin']; ?></td>
+              <td class="text-center">
+                <?php if ($row['status'] == 'Aktif') { ?>
+                  <span class="badge rounded-4" style="background-color:  #e8f8e8; color: #38c172; padding: 10px 10px; font-weight: bold; display: inline-block; width: 100px; height: 28px; text-align: center;">Aktif</span>
+                <?php } else { ?>
+                  <span class="badge rounded-4" style="background-color: #e2e3e5; color: #6c757d; padding: 10px 10px; font-weight: bold; display: inline-block; width: 100px; height: 28px; text-align: center;">Tidak Aktif</span>
+                <?php } ?>
+              </td>
               <td class="text-center">
                 <button class="btn btn-warning btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#editPetugasModal" onclick="loadEditForm('<?= $row['id_petugas']; ?>')">
                   <i class="fas fa-edit"></i> Edit

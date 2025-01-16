@@ -1,104 +1,180 @@
 <?php
 require_once '../../Config/koneksi.php';
 
-// Ambil ID petugas dari parameter URL
-$id_petugas = isset($_GET['id_petugas']) ? $_GET['id_petugas'] : null;
+if (isset($_GET['id_petugas'])) {
+    $id_petugas = $_GET['id_petugas'];
 
-if ($id_petugas) {
-    // Query untuk mengambil data petugas berdasarkan ID
-    $query = $conn->prepare("SELECT * FROM petugas WHERE id_petugas = :id_petugas");
-    $query->bindParam(':id_petugas', $id_petugas, PDO::PARAM_INT);
-    $query->execute();
-    $petugas = $query->fetch(PDO::FETCH_ASSOC);
+    // Ambil data petugas berdasarkan id_petugas
+    $query = $conn->prepare("
+        SELECT id_petugas, nama_petugas, username, no_telp, jenis_kelamin, profil_gambar, status 
+        FROM petugas 
+        WHERE id_petugas = :id_petugas
+    ");
+    $query->execute([':id_petugas' => $id_petugas]);
+    $data = $query->fetch(PDO::FETCH_ASSOC);
 
-    if ($petugas) {
-        ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Print Petugas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .print-container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-        }
-        .profile-img img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid #ddd;
-        }
-        .info-table th, .info-table td {
-            padding: 10px;
-        }
+    if ($data) {
+        // Format data
+        $nama_petugas = $data['nama_petugas'];
+        $username = $data['username'];
+        $no_telp = $data['no_telp'];
+        $jenis_kelamin = $data['jenis_kelamin'];
+        $profil_gambar = $data['profil_gambar'];
+        $status = $data['status'];
+?>
+        <!DOCTYPE html>
+        <html lang="en">
 
-        /* Hide elements during print */
-        @media print {
-            .no-print {
-                display: none;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="print-container shadow">
-            <h1 class="text-center mb-4">Detail Data Petugas</h1>
-            <div class="text-center mb-4 profile-img">
-                <img src="../../Assets/uploads/<?= $petugas['profil_gambar']; ?>" alt="Foto Profil">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>ID Card Petugas</title>
+            <style>
+                /* Google Fonts */
+                @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+                body {
+                    font-family: 'Poppins', sans-serif;
+                    background-color: #f0f2f5;
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                }
+
+                .id-card {
+                    width: 320px;
+                    background: linear-gradient(135deg, #007bff, #00a8ff);
+                    border-radius: 20px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                    overflow: hidden;
+                    position: relative;
+                    color: #fff;
+                }
+
+                .id-card-header {
+                    padding: 20px;
+                    text-align: center;
+                    background: rgba(255, 255, 255, 0.1);
+                }
+
+                .id-card-header h1 {
+                    margin: 0;
+                    font-size: 24px;
+                    font-weight: 600;
+                }
+
+                .id-card-header p {
+                    margin: 5px 0 0;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+
+                .id-card-body {
+                    padding: 20px;
+                    text-align: center;
+                }
+
+                .id-card-body img {
+                    width: 120px;
+                    height: 120px;
+                    border-radius: 50%;
+                    border: 4px solid #fff;
+                    margin-bottom: 15px;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                }
+
+                .id-card-body h2 {
+                    margin: 0;
+                    font-size: 20px;
+                    font-weight: 600;
+                }
+
+                .id-card-body p {
+                    margin: 5px 0;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+
+                .id-card-footer {
+                    background: rgba(255, 255, 255, 0.1);
+                    padding: 15px;
+                    text-align: center;
+                    border-top: 1px solid rgba(255, 255, 255, 0.2);
+                }
+
+                .id-card-footer p {
+                    margin: 0;
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+
+                .status-badge {
+                    display: inline-block;
+                    padding: 5px 15px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    font-weight: 500;
+                    margin-top: 10px;
+                    background: rgba(255, 255, 255, 0.2);
+                    color: #fff;
+                }
+
+                .status-aktif {
+                    background: rgba(56, 193, 114, 0.8);
+                }
+
+                .status-tidak-aktif {
+                    background: rgba(244, 67, 54, 0.8);
+                }
+
+                .qr-code {
+                    margin-top: 15px;
+                    text-align: center;
+                }
+
+                .qr-code img {
+                    width: 80px;
+                    height: 80px;
+                    border-radius: 10px;
+                    background: #fff;
+                    padding: 5px;
+                }
+            </style>
+        </head>
+
+        <body onload="window.print()">
+            <div class="id-card">
+                <!-- Header -->
+                <div class="id-card-header">
+                    <h1>ID CARD ADMIN</h1>
+                </div>
+
+                <!-- Body -->
+                <div class="id-card-body">
+                    <img src="../../Assets/uploads/<?= $profil_gambar; ?>" alt="Profil Petugas">
+                    <h2><?= $nama_petugas; ?></h2>
+                    <p><?= $username; ?></p>
+                    <p><?= $no_telp; ?></p>
+                    <p><?= $jenis_kelamin; ?></p>
+                </div>
+
+                <!-- Footer -->
+                <div class="id-card-footer">
+                    <p>Jl. Tasyuka No. 12, Kota Surakarta</p>
+                    <p>www.pusakU.com</p>
+                </div>
             </div>
-            <table class="table table-bordered info-table">
-                <tbody>
-                    <tr>
-                        <th class="bg-primary text-white">ID</th>
-                        <td><?= $petugas['id_petugas']; ?></td>
-                    </tr>
-                    <tr>
-                        <th class="bg-primary text-white">Nama</th>
-                        <td><?= $petugas['nama_petugas']; ?></td>
-                    </tr>
-                    <tr>
-                        <th class="bg-primary text-white">Username</th>
-                        <td><?= $petugas['username']; ?></td>
-                    </tr>
-                    <tr>
-                        <th class="bg-primary text-white">No. Telp</th>
-                        <td><?= $petugas['no_telp']; ?></td>
-                    </tr>
-                    <tr>
-                        <th class="bg-primary text-white">Jenis Kelamin</th>
-                        <td><?= $petugas['jenis_kelamin']; ?></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="text-center mt-4 no-print">
-                <button class="btn btn-primary" onclick="window.print()">
-                    <i class="fas fa-print"></i> Print
-                </button>
-                <a href="admin.php" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Kembali
-                </a>
-            </div>
-        </div>
-    </div>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        </body>
 
-        <?php
+        </html>
+<?php
     } else {
-        echo "<div class='alert alert-danger text-center'>Data petugas tidak ditemukan.</div>";
+        echo "Data petugas tidak ditemukan.";
     }
 } else {
-    echo "<div class='alert alert-danger text-center'>ID petugas tidak diberikan.</div>";
+    echo "ID petugas tidak ditemukan.";
 }
 ?>
