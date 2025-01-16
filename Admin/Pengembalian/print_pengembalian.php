@@ -130,7 +130,7 @@ if (isset($_GET['kode_kembali'])) {
             <div class="struk">
                 <div class="header">
                     <!-- Logo Perpustakaan -->
-                    <img src="../../Assets/img/logorev.svg" alt="Logo Perpustakaan">
+                    <img src="../../Assets/img/logo2.svg" alt="Logo Perpustakaan">
                     <h1>Perpustakaan Pusaku</h1>
                     <p>Jl. Tasyuka No. 12, Kota Surakarta</p>
                 </div>
@@ -141,7 +141,7 @@ if (isset($_GET['kode_kembali'])) {
                             <td><?= $data['kode_kembali']; ?></td>
                         </tr>
                         <tr>
-                            <th>Nama Anggota</th>
+                            <th>Nama</th>
                             <td><?= $data['nama_anggota']; ?></td>
                         </tr>
                         <tr>
