@@ -1,9 +1,15 @@
-<!-- anggota.php -->
 <?php
 require_once '../../Config/koneksi.php';
 include '../Layouts/header.php';
 
-$result = $conn->query("SELECT * FROM anggota");
+// Get the filter for member status
+$memberFilter = isset($_GET['member_filter']) ? $_GET['member_filter'] : 'semua'; // Default is 'semua' (all)
+$whereClause = '';
+if ($memberFilter === 'aktif') {
+  $whereClause = "WHERE anggota.status_mhs = 'Aktif'";
+} elseif ($memberFilter === 'tidak_aktif') {
+  $whereClause = "WHERE anggota.status_mhs = 'Tidak Aktif'";
+}
 
 // Pagination logic
 $limit = 10; // Jumlah data per halaman
@@ -11,17 +17,26 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Halaman saat ini
 $offset = ($page - 1) * $limit;
 
 // Hitung total data
-$totalQuery = $conn->query("SELECT COUNT(*) AS total FROM anggota");
+$totalQuery = $conn->prepare("SELECT COUNT(*) AS total FROM anggota $whereClause");
+$totalQuery->execute();
 $totalResult = $totalQuery->fetch(PDO::FETCH_ASSOC);
 $totalRows = $totalResult['total'];
 $totalPages = ceil($totalRows / $limit);
 
-// Ambil data sesuai halaman
-$result = $conn->prepare("SELECT * FROM anggota LIMIT :limit OFFSET :offset");
+
+// Ambil data sesuai halaman dan filter status anggota dan urutan abjad
+$result = $conn->prepare("
+    SELECT * FROM anggota
+    $whereClause
+    ORDER BY nama ASC
+    LIMIT :limit OFFSET :offset
+");
+
 $result->bindValue(':limit', $limit, PDO::PARAM_INT);
 $result->bindValue(':offset', $offset, PDO::PARAM_INT);
 $result->execute();
 ?>
+
 <section class="home-section">
   <div class="mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -30,8 +45,33 @@ $result->execute();
 
       <!-- Bagian Tombol dan Pencarian -->
       <div class="d-flex align-items-between gap-3">
+        <!-- Filter Anggota -->
+        <div class="dropdown rounded-3">
+          <button class="btn btn-light border d-flex align-items-center"
+            type="button" id="memberFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bx bx-filter-alt me-2"></i> Filter
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="memberFilterDropdown">
+            <li>
+              <a class="dropdown-item d-flex align-items-center <?= $memberFilter === 'semua' ? 'active' : ''; ?>" href="?member_filter=semua">
+                <i class="bx bx-check-circle me-2"></i> Semua
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center <?= $memberFilter === 'aktif' ? 'active' : ''; ?>" href="?member_filter=aktif">
+                <i class="bx bx-user-check me-2"></i> Aktif
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center <?= $memberFilter === 'tidak_aktif' ? 'active' : ''; ?>" href="?member_filter=tidak_aktif">
+                <i class="bx bx-user-x me-2"></i> Tidak Aktif
+              </a>
+            </li>
+          </ul>
+        </div>
+
         <!-- Input Pencarian -->
-        <div class="input-group" style="max-width: 200px;">
+        <div class="input-group rounded-3" style="max-width: 200px;">
           <span class="input-group-text bg-primary text-white"><i class="fas fa-search"></i></span>
           <input type="text" class="form-control" id="search" placeholder="Cari Anggota..." onkeyup="searchTable()">
         </div>
@@ -54,23 +94,22 @@ $result->execute();
         </thead>
         <tbody>
           <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)): ?>
-          <tr>
-            <td class="text-center"><?= $row['nim']; ?></td>
-            <td><?= $row['nama']; ?></td>
-            <td><?= $row['no_telp']; ?></td>
-            <td><?= $row['jenis_kelamin']; ?></td>
-            <td><?= $row['jurusan']; ?></td>
-            <td><?= $row['kelas']; ?></td>
-            <td><?= $row['tgl_lahir']; ?></td>
-<td class="text-center">
-  <?php if ($row['status_mhs'] == 'Aktif') { ?>
-    <span class="badge rounded-4" style="background-color:  #e8f8e8; color: #38c172; padding: 10px 10px; font-weight: bold; display: inline-block; width: 100px; height: 28px; text-align: center;">Aktif</span>
-  <?php } else { ?>
-    <span class="badge rounded-4" style="background-color: #e2e3e5; color: #6c757d; padding: 10px 10px; font-weight: bold; display: inline-block; width: 100px; height: 28px; text-align: center;">Tidak Aktif</span>
-  <?php } ?>
-</td>
-
-          </tr>
+            <tr style="font-size: 15px;">
+              <td class="text-center"><?= $row['nim']; ?></td>
+              <td style="font-weight: 600;"><?= $row['nama']; ?></td>
+              <td><?= $row['no_telp']; ?></td>
+              <td><?= $row['jenis_kelamin']; ?></td>
+              <td><?= $row['jurusan']; ?></td>
+              <td><?= $row['kelas']; ?></td>
+              <td><?= $row['tgl_lahir']; ?></td>
+              <td>
+                <?php if ($row['status_mhs'] == 'Aktif') { ?>
+                  <span class="badge rounded-4" style="background-color:  #e8f8e8; color: #38c172; padding: 10px 10px; font-weight: bold; display: inline-block; width: 100px; height: 28px; text-align: center;">Aktif</span>
+                <?php } else { ?>
+                  <span class="badge rounded-4" style="background-color: #e2e3e5; color: #6c757d; padding: 10px 10px; font-weight: bold; display: inline-block; width: 100px; height: 28px; text-align: center;">Tidak Aktif</span>
+                <?php } ?>
+              </td>
+            </tr>
           <?php endwhile; ?>
         </tbody>
       </table>
@@ -103,57 +142,9 @@ $result->execute();
         </ul>
       </nav>
     </div>
-  </div>
 </section>
 
 <script>
-  // Daftar Kelas
-  document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.getElementById('tambahAnggotaModal');
-    const modalContent = document.getElementById('modalContent');
-    
-    modal.addEventListener('show.bs.modal', function () {
-      fetch('add_anggota.php')
-        .then(response => response.text())
-        .then(data => {
-          modalContent.innerHTML = data;
-
-          // Tambahkan event listener untuk dropdown jurusan dan kelas
-          const jurusanToKelas = {
-            "D4 Teknologi Rekayasa Perangkat Lunak": ["23A1"],
-            "S1 Teknik Informatika": ["23A1", "23A2", "23A3", "23A4", "23A5", "23A6"],
-            "S1 Sistem Informasi": ["23A1", "23A2"],
-            "D3 Teknik Komputer": ["23A1"]
-          };
-
-          const jurusanDropdown = document.getElementById('jurusan');
-          const kelasDropdown = document.getElementById('kelas');
-
-          if (jurusanDropdown && kelasDropdown) {
-            jurusanDropdown.addEventListener('change', function () {
-              const jurusan = this.value;
-
-              // Reset opsi dropdown kelas
-              kelasDropdown.innerHTML = '<option value="" disabled selected>Pilih Kelas</option>';
-
-              if (jurusanToKelas[jurusan]) {
-                jurusanToKelas[jurusan].forEach(kelas => {
-                  const option = document.createElement('option');
-                  option.value = kelas;
-                  option.textContent = kelas;
-                  kelasDropdown.appendChild(option);
-                });
-              }
-            });
-          }
-        })
-        .catch(error => {
-          modalContent.innerHTML = '<p class="text-danger">Gagal memuat form</p>';
-          console.error('Error:', error);
-        });
-    });
-  });
-
   // Fitur Searching
   function searchTable() {
     let input = document.getElementById("search").value.toLowerCase();
