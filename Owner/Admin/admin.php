@@ -114,7 +114,7 @@ $result->execute();
               <td class="text-center">
                 <?php if ($row['status'] == 'Aktif') { ?>
                   <button class="btn btn-danger btn-sm rounded-2" onclick="ubahStatus('<?= $row['id_petugas']; ?>')">
-                    <i class="fas fa-user-slash"></i> Delete
+                    <i class="fas fa-user-slash"></i> Nonaktif
                   </button>
                   <button class="btn btn-warning btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#editPetugasModal" onclick="loadEditForm('<?= $row['id_petugas']; ?>')">
                     <i class="fas fa-edit"></i> Edit

@@ -10,12 +10,12 @@ if (isset($_GET['id_petugas'])) {
 
   if ($query->execute()) {
     echo "<script>
-            alert('Admin Berhasil dihapus!');
+            alert('Admin Berhasil menonaktifkan!');
             window.location.href = 'admin.php';
           </script>";
   } else {
     echo "<script>
-            alert('Gagal menghapus!');
+            alert('Gagal menonaktifkan!');
             window.location.href = 'admin.php';
           </script>";
   }
