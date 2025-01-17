@@ -1,58 +1,64 @@
-# **Pusaku - Pusat Informasi & Koleksi Buku**
+# 🌟 **Pusaku - Pusat Informasi & Koleksi Buku**
 
-Sistem Informasi Perpustakaan untuk Universitas Duta Bangsa Surakarta.
+> Sistem Informasi Perpustakaan Modern untuk Universitas
 
 ---
 
 ![Banner](Assets/Screnshoot/dashboard-utama.png)
 
-## **Deskripsi Proyek**
+## 📖 **Deskripsi Proyek**
 
-Pusaku adalah sistem informasi berbasis web yang dirancang untuk mempermudah pengelolaan perpustakaan. Sistem ini dibangun menggunakan **PHP Native** dan **Bootstrap 5**, dengan fitur-fitur utama yang dirancang untuk mendukung kebutuhan perpustakaan modern.
+**Pusaku** adalah sistem informasi berbasis web yang dirancang untuk mempermudah pengelolaan perpustakaan.  
+Dibangun menggunakan **PHP Native** dan **Bootstrap 5**, proyek ini menawarkan solusi modern untuk manajemen perpustakaan.
 
-Proyek ini mencakup manajemen buku, peminjaman, pengembalian, dan pengelolaan pengguna yang dibagi menjadi tiga jenis:
+### ✨ **Fitur Utama:**
 
-1. **Owner:** Pemilik sistem yang dapat menambahkan admin.
-2. **Admin:** Mengelola buku, peminjaman, dan pengembalian.
-3. **User:** Mahasiswa/peminjam yang dapat meminjam dan mengembalikan buku.
-
----
-
-## **Fitur Utama**
-
-### **Untuk Owner:**
-
-- Menambahkan, mengedit, dan menghapus akun admin.
-- Melihat laporan peminjaman dan pengembalian buku secara keseluruhan.
-- Mengelola data statistik perpustakaan.
-
-### **Untuk Admin:**
-
-- Menambahkan, mengedit, dan menghapus data buku.
-- Mengelola data peminjaman dan pengembalian buku.
-- Melihat daftar peminjam aktif dan status pengembalian.
-- Mengatur denda untuk pengembalian buku terlambat.
-
-### **Untuk User:**
-
-- Melakukan registrasi dan login.
-- Mencari buku berdasarkan kategori, judul, atau penulis.
-- Melihat detail buku (stok, deskripsi, tahun terbit).
-- Mengajukan peminjaman buku.
-- Melihat riwayat peminjaman dan status pengembalian.
+- **Manajemen Buku**: Tambah, edit, dan hapus koleksi buku.
+- **Peminjaman dan Pengembalian**: Kelola transaksi dengan mudah.
+- **Pengelolaan Pengguna**: Mendukung 3 jenis pengguna dengan akses berbeda:
+  - 👑 **Owner**: Pemilik sistem yang dapat menambahkan admin.
+  - 🛠️ **Admin**: Mengelola buku, peminjaman, dan pengembalian.
+  - 📚 **User**: Mahasiswa yang dapat meminjam buku.
 
 ---
 
-## **Teknologi yang Digunakan**
+## 🎯 **Fitur Lengkap**
 
-- **Frontend:** Bootstrap 5 untuk antarmuka pengguna yang responsif dan modern.
-- **Backend:** PHP Native untuk pemrosesan data.
-- **Database:** MySQL untuk penyimpanan data buku, pengguna, dan transaksi.
-- **Server:** Hosting lokal atau layanan hosting berbasis Apache.
+### 👑 **Untuk Owner:**
+
+- ✏️ Menambahkan, mengedit, dan menghapus akun admin.
+- 📊 Melihat laporan peminjaman dan pengembalian buku secara keseluruhan.
+- 📈 Mengelola data statistik perpustakaan.
+
+### 🛠️ **Untuk Admin:**
+
+- 📚 Menambahkan, mengedit, dan menghapus data buku.
+- 🔄 Mengelola data peminjaman dan pengembalian buku.
+- 👥 Melihat daftar peminjam aktif dan status pengembalian.
+- 💰 Mengatur denda untuk pengembalian terlambat.
+
+### 📚 **Untuk User:**
+
+- 🔑 Melakukan registrasi dan login.
+- 🔍 Mencari buku berdasarkan kategori, judul, atau penulis.
+- 📖 Melihat detail buku (stok, deskripsi, tahun terbit).
+- 📝 Mengajukan peminjaman buku.
+- 📜 Melihat riwayat peminjaman dan status pengembalian.
 
 ---
 
-## **Struktur Folder**
+## 🛠️ **Teknologi yang Digunakan**
+
+| Teknologi    | Deskripsi                          |
+| ------------ | ---------------------------------- |
+| **Frontend** | Bootstrap 5 untuk antarmuka modern |
+| **Backend**  | PHP Native untuk pemrosesan data   |
+| **Database** | MySQL untuk penyimpanan data       |
+| **Server**   | Hosting lokal atau Apache          |
+
+---
+
+## 📁 **Struktur Folder**
 
 ```plaintext
 Pusaku/
