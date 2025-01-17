@@ -112,16 +112,23 @@ $result->execute();
                 <?php } ?>
               </td>
               <td class="text-center">
-                <button class="btn btn-warning btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#editPetugasModal" onclick="loadEditForm('<?= $row['id_petugas']; ?>')">
-                  <i class="fas fa-edit"></i> Edit
-                </button>
-                <button class="btn btn-danger btn-sm rounded-2" onclick="confirmDelete('<?= $row['id_petugas']; ?>')">
-                  <i class="fas fa-trash"></i> Delete
-                </button>
-                <button class="btn btn-success btn-sm rounded-2" onclick="printPetugas('<?= $row['id_petugas']; ?>')">
-                  <i class="fas fa-print"></i> Print
-                </button>
+                <?php if ($row['status'] == 'Aktif') { ?>
+                  <button class="btn btn-danger btn-sm rounded-2" onclick="ubahStatus('<?= $row['id_petugas']; ?>')">
+                    <i class="fas fa-user-slash"></i> Delete
+                  </button>
+                  <button class="btn btn-warning btn-sm rounded-2" data-bs-toggle="modal" data-bs-target="#editPetugasModal" onclick="loadEditForm('<?= $row['id_petugas']; ?>')">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                  <button class="btn btn-info btn-sm rounded-2 text-white" onclick="printPetugas('<?= $row['id_petugas']; ?>')">
+                    <i class="fas fa-print"></i> Print
+                  </button>
+                <?php } else { ?>
+                  <button class="btn btn-info btn-sm rounded-2 text-white" onclick="printPetugas('<?= $row['id_petugas']; ?>')">
+                    <i class="fas fa-print"></i> Print
+                  </button>
+                <?php } ?>
               </td>
+
             </tr>
           <?php endwhile; ?>
         </tbody>
@@ -195,9 +202,10 @@ $result->execute();
   }
 
   //Ajax Delet Petugas
-  function confirmDelete(id_petugas) {
-    if (confirm("Apakah Anda yakin ingin menghapus petugas ini?")) {
-      window.location.href = "delete_petugas.php?id_petugas=" + id_petugas;
+  function ubahStatus(idPetugas) {
+    if (confirm("Apakah Anda yakin ingin Menghapus Admin ini?")) {
+      // Kirim permintaan ke server
+      window.location.href = `delete_petugas.php?id_petugas=${idPetugas}`;
     }
   }
 
