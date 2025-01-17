@@ -1,10 +1,10 @@
-# **Perpusaku - Sistem Informasi Perpustakaan**  
+# **Pusaku - Pusat Informasi & Koleksi Buku**  
 Sistem Informasi Perpustakaan untuk Universitas Duta Bangsa Surakarta.
 
 ---
 
 ## **Deskripsi Proyek**  
-Perpusaku adalah sistem informasi berbasis web yang dirancang untuk mempermudah pengelolaan perpustakaan. Sistem ini dibangun menggunakan **PHP Native** dan **Bootstrap 5**, dengan fitur-fitur utama yang dirancang untuk mendukung kebutuhan perpustakaan modern.
+Pusaku adalah sistem informasi berbasis web yang dirancang untuk mempermudah pengelolaan perpustakaan. Sistem ini dibangun menggunakan **PHP Native** dan **Bootstrap 5**, dengan fitur-fitur utama yang dirancang untuk mendukung kebutuhan perpustakaan modern.
 
 Proyek ini mencakup manajemen buku, peminjaman, pengembalian, dan pengelolaan pengguna yang dibagi menjadi tiga jenis:  
 1. **Owner:** Pemilik sistem yang dapat menambahkan admin.  
@@ -44,7 +44,7 @@ Proyek ini mencakup manajemen buku, peminjaman, pengembalian, dan pengelolaan pe
 
 ## **Struktur Folder**  
 ```plaintext
-Perpusaku/
+Pusaku/
 ├── assets/              # File CSS, JS, dan gambar
 ├── database/            # Skrip SQL untuk inisialisasi database
 ├── includes/            # File PHP untuk koneksi database dan fungsi umum
