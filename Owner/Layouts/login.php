@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,7 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../../Assets/css/login.css">
+    <style>
+        .password-toggle {
+            position: absolute;
+            top: 75%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-form">
@@ -67,11 +78,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
         </div>
         <div class="graphic-side">
-            <img src="../../Assets/img/logo.png" alt="Logo" class="img-fluid logo-style">
+            <img src="../../Assets/img/logorev.svg" alt="Logo" class="img-fluid logo-style">
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../Assets/js/login_Admin.js"></script>
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.classList.toggle('bi-eye');
+            this.classList.toggle('bi-eye-slash');
+        });
+    </script>
 </body>
+
 </html>

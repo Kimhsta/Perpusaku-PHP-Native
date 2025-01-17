@@ -30,8 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Menyimpan data petugas ke database tanpa status_petugas
     $stmt = $conn->prepare("INSERT INTO petugas (id_petugas, nama_petugas, username, password, no_telp, jenis_kelamin, profil_gambar) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$id_petugas, $nama_petugas, $username, password_hash($password, PASSWORD_DEFAULT), $no_telp, $jenis_kelamin, $profil_gambar]);
+                        VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$id_petugas, $nama_petugas, $username, $password, $no_telp, $jenis_kelamin, $profil_gambar]);
+
 
     if ($stmt) {
       echo "<script>
