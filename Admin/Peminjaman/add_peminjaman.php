@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Query untuk mengambil data anggota, buku, dan petugas
 $anggota = $conn->query("SELECT nim, nama FROM anggota WHERE status_mhs = 'Aktif'")->fetchAll(PDO::FETCH_ASSOC);
 $buku = $conn->query("SELECT kode_buku, judul_buku FROM buku WHERE stok > 0")->fetchAll(PDO::FETCH_ASSOC);
-$petugas = $conn->query("SELECT id_petugas, nama_petugas FROM petugas")->fetchAll(PDO::FETCH_ASSOC);
+$petugas = $conn->query("SELECT id_petugas, nama_petugas FROM petugas WHERE status = 'Aktif'")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="container">
@@ -102,7 +102,7 @@ $petugas = $conn->query("SELECT id_petugas, nama_petugas FROM petugas")->fetchAl
           <select name="id_petugas" id="id_petugas" class="form-select" required>
             <option value="">Pilih Petugas</option>
             <?php foreach ($petugas as $p): ?>
-              <option value="<?= $p['id_petugas']; ?>"><?= $p['nama_petugas']; ?></option>
+              <option value="<?= $p['id_petugas']; ?>"><?= htmlspecialchars($p['nama_petugas']); ?></option>
             <?php endforeach; ?>
           </select>
         </div>
