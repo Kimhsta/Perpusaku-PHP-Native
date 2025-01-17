@@ -8,17 +8,28 @@ $limit = 10; // Jumlah data per halaman
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Halaman saat ini
 $offset = ($page - 1) * $limit;
 
-// Hitung total data
-$totalQuery = $conn->query("SELECT COUNT(*) AS total FROM petugas");
+// Filter status petugas
+$statusFilter = isset($_GET['status_filter']) ? $_GET['status_filter'] : 'semua'; // Default 'semua'
+$whereClause = '';
+if ($statusFilter === 'aktif') {
+  $whereClause = "WHERE status = 'Aktif'";
+} elseif ($statusFilter === 'tidak_aktif') {
+  $whereClause = "WHERE status = 'Tidak Aktif'";
+}
+
+// Hitung total data dengan filter
+$totalQuery = $conn->prepare("SELECT COUNT(*) AS total FROM petugas $whereClause");
+$totalQuery->execute();
 $totalResult = $totalQuery->fetch(PDO::FETCH_ASSOC);
 $totalRows = $totalResult['total'];
 $totalPages = ceil($totalRows / $limit);
 
-// Ambil data sesuai halaman
-$result = $conn->prepare("SELECT * FROM petugas LIMIT :limit OFFSET :offset");
+// Ambil data sesuai filter dan halaman
+$result = $conn->prepare("SELECT * FROM petugas $whereClause LIMIT :limit OFFSET :offset");
 $result->bindValue(':limit', $limit, PDO::PARAM_INT);
 $result->bindValue(':offset', $offset, PDO::PARAM_INT);
 $result->execute();
+
 ?>
 <section class="home-section">
   <div class="mt-5">
@@ -28,6 +39,30 @@ $result->execute();
 
       <!-- Bagian Tombol dan Pencarian -->
       <div class="d-flex align-items-between gap-3">
+        <div class="dropdown rounded-3">
+          <button class="btn btn-light border d-flex align-items-center" type="button" id="statusFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bx bx-filter-alt me-2"></i> Filter
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="statusFilterDropdown">
+            <li>
+              <a class="dropdown-item d-flex align-items-center <?= $statusFilter === 'semua' ? 'active' : ''; ?>" href="?status_filter=semua">
+                <i class="bx bx-check-circle me-2"></i> Semua
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center <?= $statusFilter === 'aktif' ? 'active' : ''; ?>" href="?status_filter=aktif">
+                <i class="bx bx-user-check me-2 text-success"></i> Aktif
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center <?= $statusFilter === 'tidak_aktif' ? 'active' : ''; ?>" href="?status_filter=tidak_aktif">
+                <i class="bx bx-user-x me-2 text-danger"></i> Tidak Aktif
+              </a>
+            </li>
+          </ul>
+        </div>
+
+
         <!-- Input Pencarian -->
         <div class="input-group" style="max-width: 200px;">
           <span class="input-group-text bg-primary text-white"><i class="fas fa-search"></i></span>

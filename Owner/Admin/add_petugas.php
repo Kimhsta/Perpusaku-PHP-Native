@@ -2,47 +2,48 @@
 require_once '../../Config/koneksi.php';
 
 // Fungsi untuk mengambil ID petugas terbaru
-function getLastPetugasId($conn) {
-    $stmt = $conn->prepare("SELECT MAX(id_petugas) AS last_id FROM petugas");
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? $result['last_id'] : 0;
+function getLastPetugasId($conn)
+{
+  $stmt = $conn->prepare("SELECT MAX(id_petugas) AS last_id FROM petugas");
+  $stmt->execute();
+  $result = $stmt->fetch(PDO::FETCH_ASSOC);
+  return $result ? $result['last_id'] : 0;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ambil data dari form
-    $id_petugas = getLastPetugasId($conn) + 1;  // ID otomatis
-    $nama_petugas = $_POST['nama_petugas'];
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $no_telp = $_POST['no_telp'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $profil_gambar = ''; // Gambar akan diupload nanti
+  // Ambil data dari form
+  $id_petugas = getLastPetugasId($conn) + 1;  // ID otomatis
+  $nama_petugas = $_POST['nama_petugas'];
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $no_telp = $_POST['no_telp'];
+  $jenis_kelamin = $_POST['jenis_kelamin'];
+  $profil_gambar = ''; // Gambar akan diupload nanti
 
-    try {
-        // Proses upload gambar jika ada
-        if (isset($_FILES['profil_gambar']) && $_FILES['profil_gambar']['error'] == 0) {
-            $target_dir = "../../Assets/uploads/";
-            $profil_gambar = basename($_FILES['profil_gambar']['name']);
-            move_uploaded_file($_FILES['profil_gambar']['tmp_name'], $target_dir . $profil_gambar);
-        }
+  try {
+    // Proses upload gambar jika ada
+    if (isset($_FILES['profil_gambar']) && $_FILES['profil_gambar']['error'] == 0) {
+      $target_dir = "../../Assets/uploads/";
+      $profil_gambar = basename($_FILES['profil_gambar']['name']);
+      move_uploaded_file($_FILES['profil_gambar']['tmp_name'], $target_dir . $profil_gambar);
+    }
 
-        // Menyimpan data petugas ke database tanpa status_petugas
-        $stmt = $conn->prepare("INSERT INTO petugas (id_petugas, nama_petugas, username, password, no_telp, jenis_kelamin, profil_gambar) 
+    // Menyimpan data petugas ke database tanpa status_petugas
+    $stmt = $conn->prepare("INSERT INTO petugas (id_petugas, nama_petugas, username, password, no_telp, jenis_kelamin, profil_gambar) 
                                 VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$id_petugas, $nama_petugas, $username, password_hash($password, PASSWORD_DEFAULT), $no_telp, $jenis_kelamin, $profil_gambar]);
+    $stmt->execute([$id_petugas, $nama_petugas, $username, password_hash($password, PASSWORD_DEFAULT), $no_telp, $jenis_kelamin, $profil_gambar]);
 
-        if ($stmt) {
-            echo "<script>
+    if ($stmt) {
+      echo "<script>
                     alert('Petugas berhasil ditambahkan.');
                     window.location.href = 'admin.php'; // Redirect ke halaman admin
                 </script>";
-        }
-    } catch (PDOException $e) {
-        echo "<script>
+    }
+  } catch (PDOException $e) {
+    echo "<script>
                 alert('Terjadi kesalahan: " . $e->getMessage() . "');
             </script>";
-    }
+  }
 }
 ?>
 
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="row g-3">
       <div class="col-md-6">
         <label for="nama_petugas" class="form-label">Nama Petugas</label>
-        <input type="text" class="form-control" id="nama_petugas" name="nama_petugas" placeholder="Masukkan Nama Petugas" required>
+        <input type="text" class="form-control" id="nama_petugas" name="nama_petugas" placeholder="Masukkan Nama Lengkap" required>
       </div>
       <div class="col-md-6">
         <label for="username" class="form-label">Username</label>
@@ -59,11 +60,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
       <div class="col-md-6">
         <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password" required>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password min 8 dan ada karakter khusus" required>
       </div>
       <div class="col-md-6">
         <label for="no_telp" class="form-label">No. Telepon</label>
-        <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Masukkan No. Telepon" required>
+        <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Diwali dengan '+62'" required>
       </div>
       <div class="col-md-6">
         <label class="form-label d-block">Jenis Kelamin</label>
@@ -90,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
   const noTelpInput = document.getElementById('no_telp');
-  noTelpInput.addEventListener('input', function () {
+  noTelpInput.addEventListener('input', function() {
     this.value = this.value.replace(/[^0-9]/g, ''); // Menghapus karakter selain angka
   });
 </script>
