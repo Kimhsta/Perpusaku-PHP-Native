@@ -1,18 +1,13 @@
 <?php
 session_start();
-require_once '../Config/koneksi.php';
-
-// Query untuk mendapatkan jumlah anggota, buku, peminjaman, dan pengembalian
-$anggotaResult = $conn->query("SELECT * FROM anggota");
-$bukuResult = $conn->query("SELECT * FROM buku");
-$peminjamanResult = $conn->query("SELECT * FROM peminjaman");
-$pengembalianResult = $conn->query("SELECT * FROM pengembalian");
+require_once '../Config/koneksi.php'; // Sesuaikan path dengan struktur folder
 
 if (!isset($_SESSION['nim'])) {
   header('Location: login.php');
   exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -233,7 +228,24 @@ if (!isset($_SESSION['nim'])) {
       <a href="#">Komunikasi Digital</a>
     </div>
     <div class="menu-overlay"></div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav d-flex justify-content-around py-2">
+      <a href="Home/buku_populer.php" class="nav-link active" data-id="home">
+        <i class="fas fa-home fa-lg"></i>
+        <div>Home</div>
+      </a>
+      <a href="#" class="nav-link" data-id="borrowing">
+        <i class="fas fa-book fa-lg"></i>
+        <div>Borrowing</div>
+      </a>
+      <a href="#" class="nav-link" data-id="account">
+        <i class="fas fa-user fa-lg"></i>
+        <div>Account</div>
+      </a>
+    </nav>
   </header>
+
 
   <!-- Content -->
   <section class="search-bar d-flex mt-3">
@@ -245,23 +257,5 @@ if (!isset($_SESSION['nim'])) {
     <h2 class="fw-bold fs-7">Minimal Literasi lah dek!</h2>
     <img src="../Assets/img/pngegg.png" alt="Books" height="200" />
   </section>
-
-
-  <!-- Bottom Navigation -->
-  <nav class="bottom-nav d-flex justify-content-around py-2">
-    <a href="#" class="nav-link active" data-id="home">
-      <i class="fas fa-home fa-lg"></i>
-      <div>Home</div>
-    </a>
-    <a href="#" class="nav-link" data-id="borrowing">
-      <i class="fas fa-book fa-lg"></i>
-      <div>Borrowing</div>
-    </a>
-    <a href="#" class="nav-link" data-id="account">
-      <i class="fas fa-user fa-lg"></i>
-      <div>Account</div>
-    </a>
-  </nav>
-
   <script src="../Assets/scripts/home.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
