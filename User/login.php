@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['nim'] = $user['nim'];
                 $_SESSION['nama'] = $user['nama'];
 
-                header('Location: home.php'); // Ganti dengan halaman utama setelah login
+                header('Location: index.php'); // Ganti dengan halaman utama setelah login
                 exit;
             } else {
                 $error = 'Password salah!';
