@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="login-container">
         <div class="login-logo mt-4 mb-4">
-            <img src="../Assets/img/logo.png" alt="University Logo" />
+            <img src="../Assets/img/logorev.svg" alt="University Logo" />
         </div>
         <h2 class="login-header text-center">Welcome Back!</h2>
         <p class="login-subtitle text-center">Please login to your account</p>

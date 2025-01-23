@@ -203,7 +203,7 @@ $result->execute();
 
   //Ajax Delet Petugas
   function ubahStatus(idPetugas) {
-    if (confirm("Apakah Anda yakin ingin Menghapus Admin ini?")) {
+    if (confirm("Apakah Anda yakin ingin Menonaktifkan akun Admin ini?")) {
       // Kirim permintaan ke server
       window.location.href = `delete_petugas.php?id_petugas=${idPetugas}`;
     }

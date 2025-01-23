@@ -144,12 +144,29 @@ if (!isset($_SESSION['nim'])) {
       height: 200px;
     }
 
+
+    .conten {
+      margin: 20px;
+    }
+
     .card {
-      margin: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+
+    }
+
+    .card-body {
+      padding: 1rem;
+      /* Padding dalam card */
+    }
+
+    .btn-sm {
+      font-size: 0.8rem;
+      /* Ukuran font tombol */
     }
 
     .card img {
-      margin: 20px;
+      margin: 0px;
       height: px;
       object-fit: cover;
     }
@@ -231,11 +248,11 @@ if (!isset($_SESSION['nim'])) {
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav d-flex justify-content-around py-2">
-      <a href="Home/buku_populer.php" class="nav-link active" data-id="home">
+      <a href="home.php" class="nav-link active" data-id="home">
         <i class="fas fa-home fa-lg"></i>
         <div>Home</div>
       </a>
-      <a href="#" class="nav-link" data-id="borrowing">
+      <a href="borrowing.php" class="nav-link" data-id="borrowing">
         <i class="fas fa-book fa-lg"></i>
         <div>Borrowing</div>
       </a>
@@ -247,15 +264,6 @@ if (!isset($_SESSION['nim'])) {
   </header>
 
 
-  <!-- Content -->
-  <section class="search-bar d-flex mt-3">
-    <input type="text" class="form-control" placeholder="Search" />
-    <button class="btn"><i class="fas fa-search"></i></button>
-  </section>
-  <section
-    class="banner mt-4 d-flex justify-content-between align-items-center">
-    <h2 class="fw-bold fs-7">Minimal Literasi lah dek!</h2>
-    <img src="../Assets/img/pngegg.png" alt="Books" height="200" />
-  </section>
+
   <script src="../Assets/scripts/home.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
