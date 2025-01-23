@@ -6,6 +6,8 @@ if (!isset($_SESSION['nim'])) {
   header('Location: login.php');
   exit;
 }
+
+$page = basename($_SERVER['PHP_SELF'], '.php');
 ?>
 
 <!DOCTYPE html>
@@ -171,9 +173,6 @@ if (!isset($_SESSION['nim'])) {
       object-fit: cover;
     }
 
-    .card-title {
-      color: var(--primary);
-    }
 
     .btn-primary {
       background-color: var(--primary);
@@ -201,9 +200,14 @@ if (!isset($_SESSION['nim'])) {
       bottom: 0;
       left: 0;
       width: 100%;
-      background-color: white;
       border-top: 1px solid #ddd;
       z-index: 10;
+      background-color: rgba(255, 255, 255, 0.8);
+      /* Semi-transparent background */
+      backdrop-filter: blur(10px);
+      /* Efek blur */
+      transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
+      /* Transisi halus */
     }
 
     .bottom-nav a {
@@ -218,6 +222,13 @@ if (!isset($_SESSION['nim'])) {
     .bottom-nav a.active {
       color: var(--primary);
       font-weight: bold;
+    }
+
+    .bottom-nav.blur {
+      backdrop-filter: blur(20px);
+      /* Efek blur lebih kuat saat di-scroll */
+      background-color: rgba(255, 255, 255, 0.95);
+      /* Lebih opaque saat di-scroll */
     }
   </style>
 </head>
@@ -245,25 +256,56 @@ if (!isset($_SESSION['nim'])) {
       <a href="#">Komunikasi Digital</a>
     </div>
     <div class="menu-overlay"></div>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav d-flex justify-content-around py-2">
-      <a href="home.php" class="nav-link active" data-id="home">
-        <i class="fas fa-home fa-lg"></i>
-        <div>Home</div>
-      </a>
-      <a href="borrowing.php" class="nav-link" data-id="borrowing">
-        <i class="fas fa-book fa-lg"></i>
-        <div>Borrowing</div>
-      </a>
-      <a href="#" class="nav-link" data-id="account">
-        <i class="fas fa-user fa-lg"></i>
-        <div>Account</div>
-      </a>
-    </nav>
   </header>
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav d-flex justify-content-around">
+    <a href="home.php" class="nav-link <?php if ($page == 'home') echo 'active'; ?>" data-id="home">
+      <i class="fas fa-home fa-lg"></i>
+      <div>Beranda</div>
+    </a>
+    <a href="history.php" class="nav-link <?php if ($page == 'history') echo 'active'; ?>" data-id="history">
+      <i class="fas fa-book fa-lg"></i>
+      <div>History</div>
+    </a>
+    <a href="akun.py" class="nav-link <?php if ($page == 'akun') echo 'active'; ?>" data-id="akun">
+      <i class="fas fa-user fa-lg"></i>
+      <div>Akun</div>
+    </a>
+  </nav>
 
 
+  <script>
+    // Elements
+    const menuIcon = document.querySelector(".menu-icon");
+    const hamburgerMenu = document.querySelector(".hamburger-menu");
+    const menuOverlay = document.querySelector(".menu-overlay");
+    const closeMenu = document.querySelector(".close-menu");
 
-  <script src="../Assets/scripts/home.js"></script>
+    // Show menu
+    menuIcon.addEventListener("click", () => {
+      hamburgerMenu.style.display = "block";
+      menuOverlay.style.display = "block";
+    });
+
+    // Hide menu
+    menuOverlay.addEventListener("click", () => {
+      hamburgerMenu.style.display = "none";
+      menuOverlay.style.display = "none";
+    });
+
+    closeMenu.addEventListener("click", () => {
+      hamburgerMenu.style.display = "none";
+      menuOverlay.style.display = "none";
+    });
+
+    // Change active link in bottom navigation
+    const navLinks = document.querySelectorAll(".bottom-nav .nav-link");
+    const currentPage = window.location.pathname.split('/').pop();
+
+    navLinks.forEach((link) => {
+      if (link.href.includes(currentPage)) {
+        link.classList.add("active");
+      }
+    });
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
