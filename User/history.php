@@ -36,65 +36,68 @@ $query->execute();
 $history = $query->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!-- Content -->
-<section class="search-bar d-flex mt-3">
-    <input type="text" class="form-control" placeholder="Search" />
-    <button class="btn"><i class="fas fa-search"></i></button>
-</section>
-<section class="banner mt-2 d-flex justify-content-between align-items-center">
-    <h2 class="fw-bold fs-7">History Peminjaman</h2>
-    <img src="../Assets/img/pngegg.png" alt="Books" height="200" />
-</section>
-
 <!-- Konten History Peminjaman -->
-<section class="conten mt-2">
-    <h3 class="mb-4">Riwayat Peminjaman dan Pengembalian</h3>
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Judul Buku</th>
-                    <th>Tanggal Pinjam</th>
-                    <th>Estimasi Kembali</th>
-                    <th>Tanggal Kembali</th>
-                    <th>Kondisi Buku</th>
-                    <th>Denda</th>
-                    <th>Status Pengembalian</th>
-                    <th>Pembayaran</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (empty($history)): ?>
-                    <tr>
-                        <td colspan="9" class="text-center">Tidak ada riwayat peminjaman.</td>
-                    </tr>
-                <?php else: ?>
-                    <?php $no = 1; ?>
-                    <?php foreach ($history as $h): ?>
-                        <tr>
-                            <td><?= $no++ ?></td>
-                            <td>
-                                <img src="../Assets/uploads/<?= $h['cover'] ?>" alt="<?= $h['judul_buku'] ?>" style="width: 50px; height: 70px; object-fit: cover;">
-                                <?= $h['judul_buku'] ?>
-                            </td>
-                            <td><?= date('d M Y', strtotime($h['tgl_pinjam'])) ?></td>
-                            <td><?= date('d M Y', strtotime($h['estimasi_pinjam'])) ?></td>
-                            <td>
-                                <?= $h['tgl_kembali'] ? date('d M Y', strtotime($h['tgl_kembali'])) : 'Belum Dikembalikan' ?>
-                            </td>
-                            <td><?= $h['kondisi_buku'] ?? '-' ?></td>
-                            <td><?= $h['denda'] ? 'Rp ' . number_format($h['denda'], 0, ',', '.') : 'Tidak Ada' ?></td>
-                            <td>
-                                <span class="badge <?= $h['status_pengembalian'] === 'Lunas' ? 'bg-success' : 'bg-warning' ?>">
-                                    <?= $h['status_pengembalian'] ?? 'Belum Lunas' ?>
-                                </span>
-                            </td>
-                            <td><?= $h['pembayaran'] ?? '-' ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
+<section class="conten mt-4">
+    <h3 class="mb-4 text-bold">Riwayat Peminjaman</h3>
+    <div>
+        <?php if (empty($history)): ?>
+            <p class="text-center">Tidak ada riwayat peminjaman.</p>
+        <?php else: ?>
+            <div class="row">
+                <?php foreach ($history as $h): ?>
+                    <div class="col-12 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="row g-0">
+                                <div class="col-3">
+                                    <img src="../Assets/uploads/<?= $h['cover'] ?>"
+                                        alt="<?= $h['judul_buku'] ?>"
+                                        class="img-fluid rounded-lg"
+                                        style="width: 100%; height: auto; object-fit: contain; background-color: #f8f9fa;">
+                                </div>
+                                <div class="col-9">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?= $h['judul_buku'] ?></h5>
+                                        <p class="card-text text-muted">
+                                            <small>Status:
+                                                <span class="badge <?= $h['status_pengembalian'] === 'Lunas' ? 'bg-success' : 'bg-warning' ?>">
+                                                    <?= $h['status_pengembalian'] ?? 'Belum Dikembalikan' ?>
+                                                </span>
+                                            </small>
+                                        </p>
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#detailModal<?= $h['kode_pinjam'] ?>">
+                                            Lihat Detail
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Detail Riwayat -->
+                    <div class="modal fade" id="detailModal<?= $h['kode_pinjam'] ?>" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailModalLabel">Detail Riwayat</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Judul Buku:</strong> <?= $h['judul_buku'] ?></p>
+                                    <p><strong>Tanggal Pinjam:</strong> <?= date('d M Y', strtotime($h['tgl_pinjam'])) ?></p>
+                                    <p><strong>Estimasi Kembali:</strong> <?= date('d M Y', strtotime($h['estimasi_pinjam'])) ?></p>
+                                    <p><strong>Tanggal Kembali:</strong> <?= $h['tgl_kembali'] ? date('d M Y', strtotime($h['tgl_kembali'])) : 'Belum Dikembalikan' ?></p>
+                                    <p><strong>Kondisi Buku:</strong> <?= $h['kondisi_buku'] ?? '-' ?></p>
+                                    <p><strong>Denda:</strong> <?= $h['denda'] ? 'Rp ' . number_format($h['denda'], 0, ',', '.') : 'Tidak Ada' ?></p>
+                                    <p><strong>Pembayaran:</strong> <?= $h['pembayaran'] ?? '-' ?></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
 </section>
