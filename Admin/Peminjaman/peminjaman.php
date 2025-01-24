@@ -3,7 +3,7 @@ require_once '../../Config/koneksi.php';
 include '../Layouts/header.php';
 
 // Pagination logic
-$limit = 10; // Jumlah data per halaman
+$limit = 5; // Jumlah data per halaman
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Halaman saat ini
 $offset = ($page - 1) * $limit;
 
