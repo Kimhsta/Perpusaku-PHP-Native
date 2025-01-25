@@ -389,7 +389,7 @@ $page = basename($_SERVER['PHP_SELF'], '.php');
       <i class="fas fa-book fa-lg"></i>
       <div>History</div>
     </a>
-    <a href="akun.py" class="nav-link <?php if ($page == 'akun') echo 'active'; ?>" data-id="akun">
+    <a href="account.php" class="nav-link <?php if ($page == 'akun') echo 'active'; ?>" data-id="akun">
       <i class="fas fa-user fa-lg"></i>
       <div>Akun</div>
     </a>
