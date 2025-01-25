@@ -103,16 +103,6 @@ $page = basename($_SERVER['PHP_SELF'], '.php');
       z-index: 999;
     }
 
-    @keyframes slideUp {
-      from {
-        transform: translateY(100%);
-      }
-
-      to {
-        transform: translateY(0);
-      }
-    }
-
     .search-bar {
       margin: 20px;
       margin-bottom: 50px;
@@ -206,8 +196,6 @@ $page = basename($_SERVER['PHP_SELF'], '.php');
       /* Semi-transparent background */
       backdrop-filter: blur(10px);
       /* Efek blur */
-      transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
-      /* Transisi halus */
     }
 
     .bottom-nav a {
@@ -216,8 +204,10 @@ $page = basename($_SERVER['PHP_SELF'], '.php');
       text-align: center;
       padding: 10px 0;
       flex: 1;
-      transition: color 0.3s ease;
+      transition: none !important;
+      /* Nonaktifkan transisi yang tidak perlu */
     }
+
 
     .bottom-nav a.active {
       color: var(--primary);
@@ -231,6 +221,138 @@ $page = basename($_SERVER['PHP_SELF'], '.php');
       /* Lebih opaque saat di-scroll */
     }
   </style>
+  <!-- Tambahkan di bagian CSS header.php -->
+  <style>
+    /* ANIMASI UMUM */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    /* ANIMASI CARD BUKU */
+    .card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeInUp 0.6s ease-out forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(115, 113, 252, 0.2);
+    }
+
+    /* ANIMASI LOADER MODAL */
+    #modalContent[loading] {
+      position: relative;
+      min-height: 200px;
+    }
+
+    #modalContent[loading]::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40px;
+      height: 40px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    /* ANIMASI BANNER */
+    .banner {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* ANIMASI MENU HAMBURGER */
+    .hamburger-menu a {
+      transform: translateX(20px);
+      opacity: 0;
+      animation: menuItemSlide 0.4s ease-out forwards;
+    }
+
+    @keyframes menuItemSlide {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* ANIMASI TOMBOL SEARCH */
+    .search-bar button {
+      transition: all 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      transform: scale(1.05) rotate(-5deg);
+    }
+
+    /* STAGGER ANIMATION UNTUK CARD */
+    .card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .card:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .card:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .card:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    .card:nth-child(6) {
+      animation-delay: 0.6s;
+    }
+  </style>
+
+
 </head>
 
 <body>
@@ -309,3 +431,42 @@ $page = basename($_SERVER['PHP_SELF'], '.php');
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Tambahkan di JavaScript header.php -->
+  <script>
+    // Animasi saat membuka menu hamburger
+    menuIcon.addEventListener("click", () => {
+      hamburgerMenu.style.display = "block";
+      menuOverlay.style.display = "block";
+
+      // Animate menu items
+      const menuItems = document.querySelectorAll('.hamburger-menu a');
+      menuItems.forEach((item, index) => {
+        item.style.animationDelay = `${index * 0.1}s`;
+      });
+    });
+
+    // Animasi scroll untuk card
+    window.addEventListener('scroll', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        if (cardTop < window.innerHeight * 0.8) {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }
+      });
+    });
+
+    // Animasi untuk loading modal
+    function loadDetailForm(kodeBuku) {
+      const modalContent = document.getElementById('modalContent');
+      modalContent.setAttribute('loading', '');
+
+      fetch(`get_detail_buku.php?kode_buku=${kodeBuku}`)
+        .then(response => response.json())
+        .then(data => {
+          modalContent.removeAttribute('loading');
+          // ... kode existing ...
+        });
+    }
+  </script>
